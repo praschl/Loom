@@ -6,25 +6,50 @@ public class DialogDefinition
 
     public Dialog StartDialog()
     {
-        return new Dialog { Lines = Lines.ToList() };
+        return new Dialog(this);
     }
+}
+
+public interface ISendDialogEvents
+{
+    event Action<Line>? OnLine;
+    void RaiseOnLine(Line line);
+}
+
+public class DialogEvents : ISendDialogEvents
+{
+    public event Action<Line>? OnLine;
+    public void RaiseOnLine(Line line) => OnLine?.Invoke(line);
 }
 
 public class Dialog
 {
-    public event Action<Line>? OnLine;
-    
+    private readonly DialogDefinition _definition;
     private int _nextLine = 0;
+
+    public Dialog(DialogDefinition definition)
+    {
+        _definition = definition;
+    }
+
+    public ISendDialogEvents DialogEvents { get; } = new DialogEvents();
     
-    public List<Line> Lines { get; internal init; } = [];
+    public List<Line> Lines => _definition.Lines;
 
     public void Advance()
     {
         if (_nextLine >= Lines.Count) return;
         
         var line = Lines[_nextLine++];
-        OnLine?.Invoke(line);
+
+        line.RaiseEvent(DialogEvents);
     }
 }
 
-public record Line(string Text);
+public record Line(string Text)
+{
+    public void RaiseEvent(ISendDialogEvents sharedEvents)
+    {
+        sharedEvents.RaiseOnLine(this);
+    }
+}

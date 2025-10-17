@@ -7,7 +7,7 @@ public class DialogDefinitionTests
     [Fact]
     public void Start_returns_a_dialog()
     {
-        var dialog = new DialogDefinition();
+        var dialog = TestData.Dialog.Empty();
 
         dialog.Should().NotBeNull();
     }
@@ -22,21 +22,12 @@ public class DialogTests
 
     public DialogTests()
     {
-        var definition = new DialogDefinition
-        {
-            Lines =
-            {
-                new Line("One"),
-                new Line("Two"),
-                new Line("Three"),
-            }
-        };
-        _dialog = definition.StartDialog();
+        _dialog = TestData.Dialog.With3Lines().StartDialog();
 
         // NOTE: StartDialog() will not send a line!
         // this is still the low level implementation without UI or Components
 
-        _dialog.OnLine += line =>
+        _dialog.DialogEvents.OnLine += line =>
         {
             _linesSent++;
             _lastLine = line;
@@ -74,3 +65,24 @@ public class DialogTests
         _lastLine.Text.Should().Be("Three");
     }
 }
+
+public static class TestData
+{
+    public static class Dialog
+    {
+        public static DialogDefinition Empty() => new DialogDefinition();
+        
+        public static DialogDefinition With3Lines()
+        {
+            return new DialogDefinition
+            {
+                Lines =
+                {
+                    new Line("One"),
+                    new Line("Two"),
+                    new Line("Three"),
+                }
+            };
+        }
+    }
+} 
