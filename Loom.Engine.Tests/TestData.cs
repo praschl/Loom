@@ -2,13 +2,13 @@
 
 public static class TestData
 {
-    public static class Dialog
+    public static class DialogRun
     {
-        public static DialogDefinition Empty() => new ();
+        public static Dialog Empty() => new ();
         
-        public static DialogDefinition With3Lines()
+        public static Dialog With3Lines()
         {
-            return new DialogDefinition
+            return new Dialog
             {
                 Nodes =
                 {
@@ -19,9 +19,9 @@ public static class TestData
             };
         }
 
-        public static DialogDefinition With1OptionsList()
+        public static Dialog With1OptionsList()
         {
-            return new DialogDefinition
+            return new Dialog
             {
                 Nodes =
                 {
