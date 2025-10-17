@@ -15,12 +15,18 @@ public class DialogRunTests
     private int _optionsCount;
     private OptionsList? _lastOptionsList;
     private bool _dialogFinished;
+    private bool _dialogStarted;
 
-    private void SetupEvents(DialogRun dialogRun)
+    private void Setup(DialogRun dialogRun)
     {
         // NOTE: StartDialog() will not send a node!
         // this is still the low level implementation without UI or Components
 
+        dialogRun.DialogEvents.DialogStarted += () =>
+        {
+            _dialogStarted = true;
+        };
+        
         dialogRun.DialogEvents.LineReceived += line =>
         {
             _nodesCount++;
@@ -48,7 +54,7 @@ public class DialogRunTests
     [Fact]
     public void Advance_sends_a_line()
     {
-        SetupEvents(TestData.DialogRun.With3Lines().StartDialog());
+        Setup(TestData.DialogRun.With3Lines().StartDialog());
 
         _dialogRun.Advance();
 
@@ -60,7 +66,7 @@ public class DialogRunTests
     [Fact]
     public void Advance_sends_three_lines_in_order()
     {
-        SetupEvents(TestData.DialogRun.With3Lines().StartDialog());
+        Setup(TestData.DialogRun.With3Lines().StartDialog());
 
         // one
         _dialogRun.Advance();
@@ -85,9 +91,24 @@ public class DialogRunTests
     }
 
     [Fact]
+    public void Advance_raises_DialogStarted_when_advancing_to_first_line()
+    {
+        Setup(TestData.DialogRun.With3Lines().StartDialog());
+        
+        _dialogRun.Advance();
+
+        _dialogStarted.Should().BeTrue();
+        _dialogStarted = false;
+        
+        _dialogRun.Advance();
+        
+        _dialogStarted.Should().BeFalse();
+    }
+    
+    [Fact]
     public void Advance_raises_DialogFinished_when_already_on_last_node()
     {
-        SetupEvents(TestData.DialogRun.With3Lines().StartDialog());
+        Setup(TestData.DialogRun.With3Lines().StartDialog());
 
         _dialogRun.Advance();
         _dialogFinished.Should().BeFalse();
@@ -107,7 +128,7 @@ public class DialogRunTests
     [Fact]
     public void Advance_raises_DialogFinished_when_already_on_last_node_with_options()
     {
-        SetupEvents(TestData.DialogRun.With1OptionsList().StartDialog());
+        Setup(TestData.DialogRun.With1OptionsList().StartDialog());
 
         _dialogRun.Advance();
         _dialogFinished.Should().BeFalse();
@@ -127,7 +148,7 @@ public class DialogRunTests
     [Fact]
     public void Advance_sends_options_after_first_line()
     {
-        SetupEvents(TestData.DialogRun.With1OptionsList().StartDialog());
+        Setup(TestData.DialogRun.With1OptionsList().StartDialog());
 
         _dialogRun.Advance();
         _dialogRun.Advance();
@@ -137,5 +158,26 @@ public class DialogRunTests
 
         _lastNode.Should().BeOfType<OptionsList>();
         _lastOptionsList.Options.Should().HaveCount(3);
+    }
+
+    [Fact]
+    public void Advance_throws_when_current_node_is_not_a_Line()
+    {
+        Setup(TestData.DialogRun.With1OptionsList().StartDialog());
+
+        _dialogRun.Advance();
+        _dialogRun.Advance();
+
+        Action advance = () => _dialogRun.Advance();
+        advance.Should().Throw<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void SelectOption_throws_when_current_node_is_not_an_OptionList()
+    {
+        Setup(TestData.DialogRun.With1OptionsList().StartDialog());
+        
+        Action selectOption = () => _dialogRun.SelectOption(0);
+        selectOption.Should().Throw<InvalidOperationException>();
     }
 }

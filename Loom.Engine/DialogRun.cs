@@ -5,7 +5,7 @@ public class DialogRun
     private readonly Dialog _definition;
     private int _nextNode;
 
-    private Node _currentNode;
+    private Node? _currentNode;
 
     public DialogRun(Dialog definition, DialogEvents? events = null)
     {
@@ -29,7 +29,12 @@ public class DialogRun
 
     public void SelectOption(int option)
     {
-        if (_currentNode is not null and not OptionsList)
+        if (_currentNode is null)
+        {
+            throw new InvalidOperationException($"Cannot use SelectOption when dialog hasn't started");
+        }
+
+        if (_currentNode is not OptionsList)
         {
             throw new InvalidOperationException($"Cannot use SelectOption on {_currentNode.GetType()}");
         }
@@ -47,8 +52,14 @@ public class DialogRun
             return;
         }
 
+        bool started = _currentNode is null;
         _currentNode = Nodes[_nextNode++];
 
+        if (started)
+        {
+            DialogEvents.OnDialogStarted();
+        }
+        
         _currentNode.Activate(DialogEvents);
     }
 }

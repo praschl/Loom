@@ -2,6 +2,10 @@
 
 public interface IDialogEvents
 {
+    
+    event Action DialogStarted;
+    void OnDialogStarted();
+    
     event Action<Line>? LineReceived;
     void OnLineReceived(Line line);
     
@@ -14,6 +18,9 @@ public interface IDialogEvents
 
 public class DialogEvents : IDialogEvents
 {
+    public event Action? DialogStarted;
+    public void OnDialogStarted() => DialogStarted?.Invoke();
+
     public event Action<Line>? LineReceived;
     public void OnLineReceived(Line line) => LineReceived?.Invoke(line);
     
