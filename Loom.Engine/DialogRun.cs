@@ -2,20 +2,16 @@
 
 public class DialogRun
 {
-    private readonly Dialog _definition;
-    private int _nextNode;
-
     private Node? _currentNode;
+    private BlockNode _currentBlock;
 
-    public DialogRun(Dialog definition, DialogEvents? events = null)
+    public DialogRun(BlockNode rootNode, DialogEvents? events = null)
     {
-        _definition = definition;
+        _currentBlock = rootNode ?? throw new ArgumentNullException(nameof(rootNode));
         DialogEvents = events ?? new DialogEvents();
     }
 
     public IDialogEvents DialogEvents { get; }
-
-    public List<Node> Nodes => _definition.Nodes;
 
     public void Advance()
     {
@@ -46,14 +42,14 @@ public class DialogRun
 
     private void ActivateNextNode()
     {
-        if (_nextNode >= Nodes.Count)
+        if (!_currentBlock.HasMoreContent)
         {
             DialogEvents.OnDialogFinished();
             return;
         }
 
         bool started = _currentNode is null;
-        _currentNode = Nodes[_nextNode++];
+        _currentNode = _currentBlock.GetNextNode();
 
         if (started)
         {

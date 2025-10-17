@@ -2,10 +2,10 @@
 
 public class Dialog
 {
-    public List<Node> Nodes { get; } = [];
-
+    public BlockNode RootNode { get; set; }
+    
     public DialogRun StartDialog()
     {
-        return new DialogRun(this);
+        return new DialogRun(RootNode);
     }
 }
