@@ -105,6 +105,26 @@ public class DialogRunTests
     }
 
     [Fact]
+    public void Advance_raises_DialogFinished_when_already_on_last_node_with_options()
+    {
+        SetupEvents(TestData.DialogRun.With1OptionsList().StartDialog());
+
+        _dialogRun.Advance();
+        _dialogFinished.Should().BeFalse();
+        
+        _dialogRun.Advance();
+        _dialogFinished.Should().BeFalse();
+                
+        _dialogRun.Advance();
+        _dialogFinished.Should().BeFalse();
+        
+        // after third line, that line should still be displayed 
+        
+        _dialogRun.Advance();
+        _dialogFinished.Should().BeTrue();
+    }
+
+    [Fact]
     public void Advance_sends_options_after_first_line()
     {
         SetupEvents(TestData.DialogRun.With1OptionsList().StartDialog());
