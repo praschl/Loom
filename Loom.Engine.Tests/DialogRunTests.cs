@@ -115,7 +115,7 @@ public class DialogRunTests
         _dialogRun.Advance();
         _dialogFinished.Should().BeFalse();
                 
-        _dialogRun.Advance();
+        _dialogRun.SelectOption(0);
         _dialogFinished.Should().BeFalse();
         
         // after third line, that line should still be displayed 
