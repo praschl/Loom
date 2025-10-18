@@ -24,7 +24,7 @@ public class DialogRun
             throw new InvalidOperationException($"Cannot use advance on {_currentNode.GetType()}");
         }
 
-        ActivateNextNode();
+        Continue();
     }
 
     public void SelectOption(int option)
@@ -43,60 +43,86 @@ public class DialogRun
 
         // set variables or select next node group or whatever here
 
-        ActivateNextNode();
+        Continue();
     }
 
-    private void ActivateNextNode()
+    private void Continue()
     {
         while (true)
         {
-            var newNode = ActivateNextNode2();
-            if (newNode is null or ContentNode)
+            var node = ActivateNextNode();
+
+            // the new node could be a function call or setting a variable
+            // in this case we have already executed it, but we didn't get new content for display
+
+            if (node is null or ContentNode)
             {
                 break;
             }
         }
     }
 
-    private Node? ActivateNextNode2()
+    private Node? ActivateNextNode()
     {
-        if (!_currentBlock.HasMoreContent)
+        while (true)
         {
-            if (_currentNode is null)
+            if (!_currentBlock.HasMoreContent)
             {
-                // just in case the root block was empty
+                if (!HandleExhaustedBlock())
+                    return null;
+
+                continue;
+            }
+
+            bool isFirstNode = _currentNode is null;
+            _currentNode = _currentBlock.GetNextNode();
+
+            if (isFirstNode)
                 DialogEvents.OnDialogStarted();
-            }
 
-            if (!_blockNodes.TryPop(out var parentBlock))
-            {
-                DialogEvents.OnDialogFinished();
-                _finished = true;
-                return null;
-            }
+            if (HandleCurrentNode(_currentNode))
+                continue;
 
-            _currentBlock = parentBlock;
-            return ActivateNextNode2();
+            return _currentNode;
         }
+    }
 
-        bool started = _currentNode is null;
-        _currentNode = _currentBlock.GetNextNode();
-
-        if (started)
+    private bool HandleExhaustedBlock()
+    {
+        if (_currentNode is null)
         {
+            // Root block was empty
             DialogEvents.OnDialogStarted();
         }
 
-        if (_currentNode is ContentNode contentNode)
-            contentNode.PushContent(DialogEvents);
-
-        if (_currentNode is BlockNode blockNode)
+        if (!_blockNodes.TryPop(out var parentBlock))
         {
-            _blockNodes.Push(_currentBlock);
-            _currentBlock = blockNode;
+            // No more blocks → dialog finished
+            DialogEvents.OnDialogFinished();
+            _finished = true;
+            return false;
         }
 
-        return _currentNode;
+        _currentBlock = parentBlock;
+        return true;
+    }
+
+    private bool HandleCurrentNode(Node node)
+    {
+        switch (node)
+        {
+            case ContentNode contentNode:
+                contentNode.PushContent(DialogEvents);
+                return false;
+
+            case BlockNode blockNode:
+                _blockNodes.Push(_currentBlock);
+                _currentBlock = blockNode;
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     private void AssertNotFinished()
