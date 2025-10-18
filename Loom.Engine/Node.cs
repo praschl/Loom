@@ -2,12 +2,16 @@
 
 public abstract record Node
 {
-    public abstract void Activate(IDialogEvents events);
 }
 
-public record Line(string Text) : Node
+public abstract record ContentNode : Node
 {
-    public override void Activate(IDialogEvents sharedEvents)
+    public abstract void PushContent(IDialogEvents events);
+}
+
+public record Line(string Text) : ContentNode
+{
+    public override void PushContent(IDialogEvents sharedEvents)
     {
         sharedEvents.OnLineReceived(this);
     }
@@ -15,9 +19,9 @@ public record Line(string Text) : Node
 
 public record Option(string Text);
 
-public record OptionsList(params List<Option> Options) : Node
+public record OptionsList(params List<Option> Options) : ContentNode
 {
-    public override void Activate(IDialogEvents sharedEvents)
+    public override void PushContent(IDialogEvents sharedEvents)
     {
         sharedEvents.OnOptionsReceived(this);
     }
@@ -28,11 +32,6 @@ public record BlockNode : Node
     private int _nextNode;
 
     public List<Node> Children { get; } = [];
-
-    public override void Activate(IDialogEvents events)
-    {
-        // can raise a `BlockStarted` event
-    }
 
     public bool HasMoreContent => _nextNode < Children.Count;
     
@@ -45,4 +44,14 @@ public record BlockNode : Node
 
         return Children[_nextNode++];
     }
+}
+
+public record ConditionalNode : Node
+{
+    public Func<bool> Condition { get; set; }
+    
+    public BlockNode WhenTrue { get; set; }
+    public BlockNode WhenFalse { get; set; }
+
+    public BlockNode GetCorrectNode() => Condition() ? WhenTrue : WhenFalse;
 }

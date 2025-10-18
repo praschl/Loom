@@ -126,6 +126,20 @@ public class DialogRunTests
     }
 
     [Fact]
+    public void Advance_raises_DialogStarted_and_DialogFinished_when_root_is_empty()
+    {
+        Setup(TestData.DialogRun.Empty().StartDialog());
+
+        _dialogStarted.Should().BeFalse();
+        _dialogFinished.Should().BeFalse();
+        
+        _dialogRun.Advance();
+        
+        _dialogStarted.Should().BeTrue();
+        _dialogFinished.Should().BeTrue();
+    }
+    
+    [Fact]
     public void Advance_raises_DialogFinished_when_already_on_last_node_with_options()
     {
         Setup(TestData.DialogRun.With1OptionsList().StartDialog());
@@ -179,5 +193,49 @@ public class DialogRunTests
         
         Action selectOption = () => _dialogRun.SelectOption(0);
         selectOption.Should().Throw<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void Advance_visits_nested_BlockNodes()
+    {
+        Setup(TestData.DialogRun.With3NestedBlockNodes().StartDialog());
+
+        _dialogRun.Advance();
+        _lastLine.Text.Should().Be("1");
+        
+        _dialogRun.Advance();
+        _lastLine.Text.Should().Be("1.1");
+
+        _dialogRun.Advance();
+        _lastLine.Text.Should().Be("1.1.1");
+        
+        _dialogRun.Advance();
+        _lastLine.Text.Should().Be("1.1.2");
+        
+        _dialogRun.Advance();
+        _lastLine.Text.Should().Be("1.2");
+        
+        _dialogRun.Advance();
+        _lastLine.Text.Should().Be("2");
+        _dialogFinished.Should().BeFalse();
+        
+        _dialogRun.Advance();
+        _dialogFinished.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Advance_throws_when_finished()
+    {
+        Setup(TestData.DialogRun.With3Lines().StartDialog());
+        
+        _dialogRun.Advance();
+        _dialogRun.Advance();
+        _dialogRun.Advance();
+        _dialogRun.Advance();
+
+        _dialogFinished.Should().BeTrue();
+        
+        Action advance = () => _dialogRun.Advance();
+        advance.Should().Throw<InvalidOperationException>();
     }
 }
