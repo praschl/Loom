@@ -1,8 +1,9 @@
 ﻿using FluentAssertions;
+using Xunit.Abstractions;
 
 namespace Loom.Engine.Tests;
 
-public class DialogRunTests
+public class DialogRunTests(ITestOutputHelper console)
 {
     private DialogRun _dialogRun = null!;
 
@@ -22,6 +23,8 @@ public class DialogRunTests
         // NOTE: StartDialog() will not send a node!
         // this is still the low level implementation without UI or Components
 
+        int indent = 0;
+        
         dialogRun.DialogEvents.DialogStarted += () =>
         {
             if (_dialogStarted)
@@ -29,8 +32,15 @@ public class DialogRunTests
             _dialogStarted = true;
         };
 
+        dialogRun.DialogEvents.BlockStarted += bl =>
+        {
+            console.WriteLine($"{new string(' ', indent)}Block started: {bl.Name}");
+            indent += 2;
+        };
+        
         dialogRun.DialogEvents.LineReceived += line =>
         {
+            console.WriteLine($"{new string(' ', indent)}Line received: {line}");
             _nodesCount++;
             _linesCount++;
             _lastLine = line;
@@ -39,12 +49,19 @@ public class DialogRunTests
 
         dialogRun.DialogEvents.OptionsReceived += options =>
         {
+            console.WriteLine($"{new string(' ', indent)}Options received: {options}");
             _nodesCount++;
             _optionsCount++;
             _lastOptionsList = options;
             _lastNode = options;
         };
-
+        
+        dialogRun.DialogEvents.BlockFinishing += bl =>
+        {
+            indent -= 2;
+            console.WriteLine($"{new string(' ', indent)}Block finishing: {bl.Name}");
+        };
+        
         dialogRun.DialogEvents.DialogFinished += () =>
         {
             if (_dialogFinished)

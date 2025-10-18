@@ -78,7 +78,10 @@ public class DialogRun
             _currentNode = _currentBlock.GetNextNode();
 
             if (isFirstNode)
+            {
                 DialogEvents.OnDialogStarted();
+                _currentBlock.Starting(DialogEvents);
+            }
 
             if (HandleCurrentNode(_currentNode))
                 continue;
@@ -93,7 +96,10 @@ public class DialogRun
         {
             // Root block was empty
             DialogEvents.OnDialogStarted();
+            _currentBlock.Starting(DialogEvents);
         }
+
+        _currentBlock.Finishing(DialogEvents);
 
         if (!_blockNodes.TryPop(out var parentBlock))
         {
@@ -118,6 +124,7 @@ public class DialogRun
             case BlockNode blockNode:
                 _blockNodes.Push(_currentBlock);
                 _currentBlock = blockNode;
+                _currentBlock.Starting(DialogEvents);
                 return true;
 
             default:

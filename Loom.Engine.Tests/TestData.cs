@@ -4,13 +4,13 @@ public static class TestData
 {
     public static class DialogRun
     {
-        public static Dialog Empty() => new() { RootNode = new BlockNode() };
+        public static Dialog Empty() => new() { RootNode = new BlockNode("Empty") };
 
         public static Dialog With3Lines()
         {
             return new Dialog
             {
-                RootNode = new BlockNode
+                RootNode = new BlockNode("With3Lines")
                 {
                     Children =
                     {
@@ -26,7 +26,7 @@ public static class TestData
         {
             return new Dialog
             {
-                RootNode = new BlockNode
+                RootNode = new BlockNode("With1OptionsList")
                 {
                     Children =
                     {
@@ -42,22 +42,22 @@ public static class TestData
         {
             return new Dialog
             {
-                RootNode = new BlockNode
+                RootNode = new BlockNode("root")
                 {
                     Children =
                     {
                         new Line("1"),
-                        new BlockNode
+                        new BlockNode("B in 1")
                         {
                             Children =
                             {
                                 new Line("1.1"),
-                                new BlockNode
+                                new BlockNode("B in 1.1")
                                 {
                                     Children =
                                     {
                                         new Line("1.1.1"),
-                                        new BlockNode
+                                        new BlockNode("B in 1.1.1")
                                         {
                             
                                         },

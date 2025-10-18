@@ -27,7 +27,7 @@ public record OptionsList(params List<Option> Options) : ContentNode
     }
 }
 
-public record BlockNode : Node
+public record BlockNode(string Name) : Node
 {
     private int _nextNode;
 
@@ -43,6 +43,16 @@ public record BlockNode : Node
         }
 
         return Children[_nextNode++];
+    }
+
+    public void Starting(IDialogEvents dialogEvents)
+    {
+        dialogEvents.OnBlockStarted(this);
+    }
+
+    public void Finishing(IDialogEvents dialogEvents)
+    {
+        dialogEvents.OnBlockFinishing(this);
     }
 }
 
