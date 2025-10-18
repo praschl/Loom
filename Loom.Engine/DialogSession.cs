@@ -122,13 +122,22 @@ public class DialogSession
                 return false;
 
             case BlockNode blockNode:
-                _blockNodes.Push(_currentBlock);
-                _currentBlock = blockNode;
-                _currentBlock.Starting(DialogEvents);
+                Activate(blockNode);
+                return true;
+
+            case ConditionalNode conditional:
+                Activate(conditional.GetCorrectNode());
                 return true;
 
             default:
                 return false;
+        }
+
+        void Activate(BlockNode blockNode)
+        {
+            _blockNodes.Push(_currentBlock);
+            _currentBlock = blockNode;
+            _currentBlock.Starting(DialogEvents);
         }
     }
 

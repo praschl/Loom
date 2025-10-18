@@ -259,4 +259,24 @@ public class DialogSessionTests(ITestOutputHelper console)
         Action advance = () => _dialogSession.Advance();
         advance.Should().Throw<InvalidOperationException>();
     }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void Advance_goes_into_correct_conditional_block(bool condition)
+    {
+        Setup(TestData.DialogSession.With1ConditionalBlock(condition).StartDialog());
+        
+        _dialogSession.Advance();
+        _lastLine.Text.Should().Be("Start");
+        
+        _dialogSession.Advance();
+        _lastLine.Text.Should().Be($"{condition} line");
+        
+        _dialogSession.Advance();
+        _lastLine.Text.Should().Be("End");
+        
+        _dialogSession.Advance();
+        _dialogFinished.Should().BeTrue();
+    }
 }

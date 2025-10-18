@@ -72,5 +72,32 @@ public static class TestData
                 }
             };
         }
+
+        public static Dialog With1ConditionalBlock(bool condition)
+        {
+            return new Dialog
+            {
+                RootNode = new BlockNode("root")
+                {
+                    Children =
+                    {
+                        new Line("Start"),
+                        new ConditionalNode()
+                        {
+                            Condition = () => condition,
+                            WhenTrue = new BlockNode("true")
+                            {
+                                Children = { new Line("True line") }
+                            },
+                            WhenFalse = new BlockNode("false")
+                            {
+                                Children = { new Line("False line") }
+                            }
+                        },
+                        new Line("End")
+                    }
+                }
+            };
+        }
     }
 }
