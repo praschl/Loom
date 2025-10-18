@@ -1,13 +1,13 @@
 ﻿namespace Loom.Engine;
 
-public class DialogRun
+public class DialogSession
 {
     private Node? _currentNode;
     private BlockNode _currentBlock;
     private readonly Stack<BlockNode> _blockNodes = [];
     private bool _finished;
 
-    public DialogRun(BlockNode rootNode, DialogEvents? events = null)
+    public DialogSession(BlockNode rootNode, DialogEvents? events = null)
     {
         _currentBlock = rootNode ?? throw new ArgumentNullException(nameof(rootNode));
         DialogEvents = events ?? new DialogEvents();
@@ -83,7 +83,7 @@ public class DialogRun
                 _currentBlock.Starting(DialogEvents);
             }
 
-            if (HandleCurrentNode(_currentNode))
+            if (HandleCurrentNode())
                 continue;
 
             return _currentNode;
@@ -113,9 +113,9 @@ public class DialogRun
         return true;
     }
 
-    private bool HandleCurrentNode(Node node)
+    private bool HandleCurrentNode()
     {
-        switch (node)
+        switch (_currentNode)
         {
             case ContentNode contentNode:
                 contentNode.PushContent(DialogEvents);

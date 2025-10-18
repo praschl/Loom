@@ -4,8 +4,8 @@ public class Dialog
 {
     public BlockNode RootNode { get; set; }
     
-    public DialogRun StartDialog()
+    public DialogSession StartDialog()
     {
-        return new DialogRun(RootNode);
+        return new DialogSession(RootNode);
     }
 }

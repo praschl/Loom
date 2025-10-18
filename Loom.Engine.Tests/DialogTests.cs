@@ -7,7 +7,7 @@ public class DialogTests
     [Fact]
     public void Start_returns_a_dialog()
     {
-        var dialog = TestData.DialogRun.Empty().StartDialog();
+        var dialog = TestData.DialogSession.Empty().StartDialog();
 
         dialog.Should().NotBeNull();
     }

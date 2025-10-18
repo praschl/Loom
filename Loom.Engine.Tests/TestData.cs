@@ -2,7 +2,7 @@
 
 public static class TestData
 {
-    public static class DialogRun
+    public static class DialogSession
     {
         public static Dialog Empty() => new() { RootNode = new BlockNode("Empty") };
 
