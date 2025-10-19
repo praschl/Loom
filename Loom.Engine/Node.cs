@@ -65,3 +65,24 @@ public record ConditionalNode : Node
 
     public BlockNode GetCorrectNode() => Condition() ? WhenTrue : WhenFalse;
 }
+
+// TODO:
+// set variable = Action // parameterlos, was wie wo, wird noch beim Parser geregelt, der nur noch die Action herstellt
+//   auch bei conditional block oder option with condition ist das nur 1 parameterlose Func<bool>, weil das was wie wo auch dort im Parser geregelt wird
+// commands also are just actions
+// Variables in Text -> Textfragments, lazy formatting
+// Options with condition
+// multiple named Blocknode in Dialog
+// goto Blocknode by name
+// gosub Blocknode by name
+// tags for lines & options
+
+// design decision: no async here
+// because when for example we encounter the command "open inventory", the following will happen
+// - command is executed
+// - unity handler can now do somethingn like this
+//   await EventBus.SendAsync("Open Inventory")
+//   await inventory.Closed // not sure I need this
+//   dialogRunner.Advance()
+// - command was executed without knowing about async stuff, and immediately continues to first real content, displaying "here are my wares"
+// - only when the inventory closed, the next line will appear
