@@ -59,7 +59,6 @@ public static class TestData
                                         new Line("1.1.1"),
                                         new BlockNode("B in 1.1.1")
                                         {
-                            
                                         },
                                         new Line("1.1.2"),
                                     }
@@ -94,6 +93,22 @@ public static class TestData
                                 Children = { new Line("False line") }
                             }
                         },
+                        new Line("End")
+                    }
+                }
+            };
+        }
+
+        public static Dialog WithAction(Action action)
+        {
+            return new Dialog
+            {
+                RootNode = new BlockNode("root")
+                {
+                    Children =
+                    {
+                        new Line("Start"),
+                        new ActionNode(action) { Name = "TestAction" },
                         new Line("End")
                     }
                 }

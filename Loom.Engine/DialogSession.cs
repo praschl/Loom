@@ -129,8 +129,14 @@ public class DialogSession
                 Activate(conditional.GetCorrectNode());
                 return true;
 
+            case ActionNode action:
+                DialogEvents.OnLog($"Starting action {action.Name}", action);
+                action.Execute();
+                DialogEvents.OnLog($"Finished action {action.Name}", action);
+                return true;
+            
             default:
-                return false;
+                throw new NotImplementedException($"No handler implemented for {_currentNode.GetType()}");
         }
 
         void Activate(BlockNode blockNode)

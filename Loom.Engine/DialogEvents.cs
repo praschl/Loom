@@ -19,6 +19,9 @@ public interface IDialogEvents
 
     event Action DialogFinished;
     void OnDialogFinished();
+
+    event Action<string, Node> Log;
+    void OnLog(string text, Node node);
 }
 
 public class DialogEvents : IDialogEvents
@@ -40,4 +43,6 @@ public class DialogEvents : IDialogEvents
 
     public event Action? DialogFinished;
     public void OnDialogFinished() => DialogFinished?.Invoke();
+    public event Action<string, Node>? Log;
+    public void OnLog(string text, Node node) => Log?.Invoke(text, node);
 }

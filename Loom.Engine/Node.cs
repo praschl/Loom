@@ -34,7 +34,7 @@ public record BlockNode(string Name) : Node
     public List<Node> Children { get; } = [];
 
     public bool HasMoreContent => _nextNode < Children.Count;
-    
+
     public Node GetNextNode()
     {
         if (_nextNode >= Children.Count)
@@ -59,23 +59,32 @@ public record BlockNode(string Name) : Node
 public record ConditionalNode : Node
 {
     public Func<bool> Condition { get; set; }
-    
+
     public BlockNode WhenTrue { get; set; }
     public BlockNode WhenFalse { get; set; }
 
     public BlockNode GetCorrectNode() => Condition() ? WhenTrue : WhenFalse;
 }
 
+public record ActionNode(Action Action) : Node
+{
+    public string Name { get; set; }
+    public void Execute() => Action();
+}
+
 // TODO:
-// set variable = Action // parameterlos, was wie wo, wird noch beim Parser geregelt, der nur noch die Action herstellt
-//   auch bei conditional block oder option with condition ist das nur 1 parameterlose Func<bool>, weil das was wie wo auch dort im Parser geregelt wird
-// commands also are just actions
+// set variable = Action // parameterless, what's happening is done in the Parser, the parser just creates the Action
+//   Conditions in Blocks or Options are also just a parameterless Func<bool>, same here, it will all be handled in the Parser
+// Commands also are just actions
 // Variables in Text -> Textfragments, lazy formatting
 // Options with condition
 // multiple named Blocknode in Dialog
 // goto Blocknode by name
 // gosub Blocknode by name
 // tags for lines & options
+
+// design decision: "set variable", "commands" are both parameterless Action. whats happening is determined in den Parser that creates the Action
+// same goes for functions that return something or conditions - they are just a Func<Value> or Func<bool> respectively
 
 // design decision: no async here
 // because when for example we encounter the command "open inventory", the following will happen
@@ -86,3 +95,19 @@ public record ConditionalNode : Node
 //   dialogRunner.Advance()
 // - command was executed without knowing about async stuff, and immediately continues to first real content, displaying "here are my wares"
 // - only when the inventory closed, the next line will appear
+
+public readonly record struct LoomValue
+{
+    public enum LoomType
+    {
+        String,
+        Number, // (use decimal)
+        Boolean,
+    }
+    
+    public LoomType Type { get; init; }
+
+    public string StringValue { get; init; }
+    public decimal NumberValue { get; init; }
+    public bool BooleanValue { get; init; }
+}

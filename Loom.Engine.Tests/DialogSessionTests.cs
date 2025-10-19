@@ -69,6 +69,11 @@ public class DialogSessionTests(ITestOutputHelper console)
             _dialogFinished = true;
         };
 
+        dialogSession.DialogEvents.Log += (text, node) =>
+        {
+            console.WriteLine($"{new string(' ', indent)} {text}");
+        };
+        
         _dialogSession = dialogSession;
     }
 
@@ -274,6 +279,23 @@ public class DialogSessionTests(ITestOutputHelper console)
         _lastLine.Text.Should().Be($"{condition} line");
         
         _dialogSession.Advance();
+        _lastLine.Text.Should().Be("End");
+        
+        _dialogSession.Advance();
+        _dialogFinished.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Advance_executes_action_and_returns_next_line()
+    {
+        bool called = false;
+        Setup(TestData.DialogSession.WithAction(() => called = true).StartDialog());
+        
+        _dialogSession.Advance();
+        called.Should().BeFalse();
+        
+        _dialogSession.Advance();
+        called.Should().BeTrue();
         _lastLine.Text.Should().Be("End");
         
         _dialogSession.Advance();
