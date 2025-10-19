@@ -14,9 +14,9 @@ public static class TestData
                 {
                     Children =
                     {
-                        new Line("One"),
-                        new Line("Two"),
-                        new Line("Three"),
+                        new LineTemplate("One"),
+                        new LineTemplate("Two"),
+                        new LineTemplate("Three"),
                     }
                 }
             };
@@ -30,9 +30,9 @@ public static class TestData
                 {
                     Children =
                     {
-                        new Line("One"),
+                        new LineTemplate("One"),
                         new OptionsList(new Option("Option 1"), new Option("Option 2"), new Option("Option 3")),
-                        new Line("Three"),
+                        new LineTemplate("Three"),
                     }
                 }
             };
@@ -46,27 +46,27 @@ public static class TestData
                 {
                     Children =
                     {
-                        new Line("1"),
+                        new LineTemplate("1"),
                         new BlockNode("B in 1")
                         {
                             Children =
                             {
-                                new Line("1.1"),
+                                new LineTemplate("1.1"),
                                 new BlockNode("B in 1.1")
                                 {
                                     Children =
                                     {
-                                        new Line("1.1.1"),
+                                        new LineTemplate("1.1.1"),
                                         new BlockNode("B in 1.1.1")
                                         {
                                         },
-                                        new Line("1.1.2"),
+                                        new LineTemplate("1.1.2"),
                                     }
                                 },
-                                new Line("1.2"),
+                                new LineTemplate("1.2"),
                             }
                         },
-                        new Line("2"),
+                        new LineTemplate("2"),
                     }
                 }
             };
@@ -80,20 +80,20 @@ public static class TestData
                 {
                     Children =
                     {
-                        new Line("Start"),
+                        new LineTemplate("Start"),
                         new ConditionalNode()
                         {
                             Condition = () => condition,
                             WhenTrue = new BlockNode("true")
                             {
-                                Children = { new Line("True line") }
+                                Children = { new LineTemplate("True line") }
                             },
                             WhenFalse = new BlockNode("false")
                             {
-                                Children = { new Line("False line") }
+                                Children = { new LineTemplate("False line") }
                             }
                         },
-                        new Line("End")
+                        new LineTemplate("End")
                     }
                 }
             };
@@ -107,9 +107,27 @@ public static class TestData
                 {
                     Children =
                     {
-                        new Line("Start"),
+                        new LineTemplate("Start"),
                         new ActionNode(action) { Name = "TestAction" },
-                        new Line("End")
+                        new LineTemplate("End")
+                    }
+                }
+            };
+        }
+
+        public static Dialog WithLineTemplate(bool condition)
+        {
+            return new Dialog
+            {
+                RootNode = new BlockNode("root")
+                {
+                    Children =
+                    {
+                        new LineTemplate([
+                            new TextFragment("This is "),
+                            new ExpressionFragment(() => condition ? "only" : "just"),
+                            new TextFragment(" the beginning")
+                        ])
                     }
                 }
             };

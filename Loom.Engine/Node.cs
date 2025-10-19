@@ -1,4 +1,6 @@
-﻿namespace Loom.Engine;
+﻿using System.Text;
+
+namespace Loom.Engine;
 
 public abstract record Node
 {
@@ -7,6 +9,56 @@ public abstract record Node
 public abstract record ContentNode : Node
 {
     public abstract void PushContent(IDialogEvents events);
+}
+
+public interface IFragment
+{
+    string GetText();
+}
+
+public readonly record struct TextFragment(string Text) : IFragment
+{
+    public string GetText() => Text;
+}
+
+public readonly record struct ExpressionFragment(Func<string> evaluator) : IFragment
+{
+    public string GetText() => evaluator();
+}
+
+public interface IEvaluateable
+{
+    Node Evaluate();
+}
+
+public record LineTemplate : Node, IEvaluateable
+{
+    public IReadOnlyCollection<IFragment>? Fragments { get; set; }
+    public string? LiteralText { get; set; }
+    
+    public Node Evaluate()
+    {
+        if (!string.IsNullOrEmpty(LiteralText))
+            return new Line(LiteralText);
+
+        var builder = new StringBuilder();
+        foreach (var fragment in Fragments)
+        {
+            builder.Append(fragment.GetText());
+        }
+        
+        return new Line(builder.ToString());
+    }
+
+    public LineTemplate(IReadOnlyCollection<IFragment> fragments)
+    {
+        Fragments = fragments;
+    }
+
+    public LineTemplate(string text) 
+    {
+        LiteralText = text;
+    }
 }
 
 public record Line(string Text) : ContentNode
@@ -42,7 +94,11 @@ public record BlockNode(string Name) : Node
             throw new InvalidOperationException($"No more node available, check with {nameof(HasMoreContent)} before.");
         }
 
-        return Children[_nextNode++];
+        var node = Children[_nextNode++];
+        if (node is IEvaluateable evaluateable)
+            node = evaluateable.Evaluate();
+
+        return node;
     }
 
     public void Starting(IDialogEvents dialogEvents)

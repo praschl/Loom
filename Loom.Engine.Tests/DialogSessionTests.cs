@@ -301,4 +301,18 @@ public class DialogSessionTests(ITestOutputHelper console)
         _dialogSession.Advance();
         _dialogFinished.Should().BeTrue();
     }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void Advance_returns_evaluated_line(bool condition)
+    {
+        Setup(TestData.DialogSession.WithLineTemplate(condition).StartDialog());
+
+        _dialogSession.Advance();
+
+        string onlyJust = condition ? "only" : "just";
+        
+        _lastLine.Text.Should().Be($"This is {onlyJust} the beginning");
+    }
 }
