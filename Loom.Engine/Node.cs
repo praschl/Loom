@@ -1,4 +1,8 @@
-﻿namespace Loom.Engine;
+﻿using System.Diagnostics;
+using System.Globalization;
+using System.Runtime.CompilerServices;
+
+namespace Loom.Engine;
 
 public interface IEvaluateable
 {
@@ -36,9 +40,65 @@ public readonly record struct LoomValue
         Boolean,
     }
     
-    public LoomType Type { get; init; }
+    public LoomType Type { get; }
 
-    public string StringValue { get; init; }
-    public decimal NumberValue { get; init; }
-    public bool BooleanValue { get; init; }
+    public string StringValue { get; }
+    public decimal NumberValue { get; }
+    public bool BooleanValue { get; }
+
+    public override string ToString()
+    {
+        return Type switch
+        {
+            LoomType.String => StringValue,
+            LoomType.Number => NumberValue.ToString(CultureInfo.CurrentCulture),
+            LoomType.Boolean => BooleanValue.ToString(CultureInfo.CurrentCulture),
+            _ => throw new UnreachableException()
+        };
+    }
+
+    public bool Equals(LoomValue other)
+    {
+        if (Type != other.Type)
+            return false;
+
+        return Type switch
+        {
+            LoomType.String => StringValue == other.StringValue,
+            LoomType.Number => NumberValue == other.NumberValue,
+            LoomType.Boolean => BooleanValue == other.BooleanValue,
+            _ => throw new UnreachableException()
+        };
+    }
+
+    public override int GetHashCode()
+    {
+        return Type switch
+        {
+            LoomType.String => HashCode.Combine((int)Type, StringValue.GetHashCode()),
+            LoomType.Number => HashCode.Combine((int)Type, NumberValue.GetHashCode()),
+            LoomType.Boolean => HashCode.Combine((int)Type, BooleanValue.GetHashCode()),
+            _ => throw new UnreachableException()
+        };
+    }
+
+    public LoomValue(LoomType type)
+    {
+        Type = type;
+    }
+
+    public LoomValue(string stringValue)
+    {
+        StringValue = stringValue;
+    }
+
+    public LoomValue(decimal numberValue)
+    {
+        NumberValue = numberValue;
+    }
+
+    public LoomValue(bool booleanValue)
+    {
+        BooleanValue = booleanValue;
+    }
 }
