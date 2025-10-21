@@ -315,4 +315,19 @@ public class DialogSessionTests(ITestOutputHelper console)
         
         _lastLine.Text.Should().Be($"This is {onlyJust} the beginning");
     }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void Advance_returns_evaluated_options(bool condition)
+    {
+        Setup(TestData.DialogSession.WithOptionsListWithFragments(condition).StartDialog());
+
+        _dialogSession.Advance();
+        _dialogSession.Advance();
+        
+        string goodbad = condition ? "is a good" : "is a bad";
+
+        _lastOptionsList.Options[0].Text.Should().Be($"This {goodbad} Option");
+    }
 }

@@ -31,7 +31,7 @@ public static class TestData
                     Children =
                     {
                         new LineTemplate("One"),
-                        new OptionsList(new Option("Option 1"), new Option("Option 2"), new Option("Option 3")),
+                        new OptionsListTemplate(new OptionTemplate("Option 1"), new OptionTemplate("Option 2"), new OptionTemplate("Option 3")),
                         new LineTemplate("Three"),
                     }
                 }
@@ -128,6 +128,22 @@ public static class TestData
                             new ExpressionFragment(() => condition ? "only" : "just"),
                             new TextFragment(" the beginning")
                         ])
+                    }
+                }
+            };
+        }
+        
+        public static Dialog WithOptionsListWithFragments(bool condition)
+        {
+            return new Dialog
+            {
+                RootNode = new BlockNode("With1OptionsList")
+                {
+                    Children =
+                    {
+                        new LineTemplate("One"),
+                        new OptionsListTemplate(new OptionTemplate([new TextFragment("This "), new ExpressionFragment(() => condition ? "is a good" : "is a bad"), new TextFragment(" Option")])),
+                        new LineTemplate("Three"),
                     }
                 }
             };

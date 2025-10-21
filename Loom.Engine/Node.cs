@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 
 namespace Loom.Engine;
 
@@ -21,10 +20,10 @@ public abstract record ContentNode : Node
 // design decision: "set variable", "commands" are both parameterless Action. whats happening is determined in den Parser that creates the Action
 // same goes for functions that return something or conditions - they are just a Func<Value> or Func<bool> respectively
 
-// design decision: no async here
+// design decision: no async here for events and Func<T>s
 // because when for example we encounter the command "open inventory", the following will happen
 // - command is executed
-// - unity handler can now do somethingn like this
+// - unity handler can now do something like this
 //   await EventBus.SendAsync("Open Inventory")
 //   await inventory.Closed // not sure I need this
 //   dialogRunner.Advance()
@@ -82,23 +81,21 @@ public readonly record struct LoomValue
         };
     }
 
-    public LoomValue(LoomType type)
-    {
-        Type = type;
-    }
-
     public LoomValue(string stringValue)
     {
+        Type = LoomType.String;
         StringValue = stringValue;
     }
 
     public LoomValue(decimal numberValue)
     {
+        Type = LoomType.Number;
         NumberValue = numberValue;
     }
 
     public LoomValue(bool booleanValue)
     {
+        Type = LoomType.Boolean;
         BooleanValue = booleanValue;
     }
 }
