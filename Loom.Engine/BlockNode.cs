@@ -1,14 +1,14 @@
 ﻿namespace Loom.Engine;
 
-public record BlockNode(string Name) : Node
+public record BlockNode(string Name) : INode, ITemplate
 {
     private int _nextNode;
 
-    public List<Node> Children { get; } = [];
+    public List<ITemplate> Children { get; } = [];
 
     public bool HasMoreContent => _nextNode < Children.Count;
 
-    public Node GetNextNode()
+    public INode GetNextNode()
     {
         if (_nextNode >= Children.Count)
         {
@@ -16,10 +16,7 @@ public record BlockNode(string Name) : Node
         }
 
         var node = Children[_nextNode++];
-        if (node is IEvaluateable evaluateable)
-            node = evaluateable.Evaluate();
-
-        return node;
+        return node.Evaluate();
     }
 
     public void Starting(IDialogEvents dialogEvents)
@@ -30,5 +27,10 @@ public record BlockNode(string Name) : Node
     public void Finishing(IDialogEvents dialogEvents)
     {
         dialogEvents.OnBlockFinishing(this);
+    }
+
+    public INode Evaluate()
+    {
+        return this;
     }
 }

@@ -1,15 +1,13 @@
 ﻿namespace Loom.Engine;
 
-public interface IEvaluateable
+public interface ITemplate
 {
-    Node Evaluate();
+    INode Evaluate();
 }
 
-public abstract record Node
-{
-}
+public interface INode;
 
-public abstract record ContentNode : Node
+public abstract record ContentNode : INode
 {
     public abstract void PushContent(IDialogEvents events);
 }

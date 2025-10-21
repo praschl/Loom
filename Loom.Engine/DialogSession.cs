@@ -2,7 +2,7 @@
 
 public class DialogSession
 {
-    private Node? _currentNode;
+    private INode? _currentNode;
     private BlockNode _currentBlock;
     private readonly Stack<BlockNode> _blockNodes = [];
     private bool _finished;
@@ -62,7 +62,7 @@ public class DialogSession
         }
     }
 
-    private Node? ActivateNextNode()
+    private INode? ActivateNextNode()
     {
         while (true)
         {

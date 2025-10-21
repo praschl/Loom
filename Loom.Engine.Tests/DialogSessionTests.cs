@@ -8,7 +8,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     private DialogSession _dialogSession = null!;
 
     private int _nodesCount;
-    private Node? _lastNode;
+    private INode? _lastNode;
 
     private int _linesCount;
     private Line? _lastLine;
