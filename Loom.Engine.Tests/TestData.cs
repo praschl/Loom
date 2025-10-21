@@ -114,6 +114,22 @@ public static class TestData
                 }
             };
         }
+        
+        public static Dialog With2ActionsAsFinish(Action action1 , Action action2)
+        {
+            return new Dialog
+            {
+                RootNode = new BlockNode("root")
+                {
+                    Children =
+                    {
+                        new LineTemplate("Start"),
+                        new ActionNode(action1) { Name = "TestAction 1" },
+                        new ActionNode(action2) { Name = "TestAction 2" }
+                    }
+                }
+            };
+        }
 
         public static Dialog WithLineTemplate(bool condition)
         {
