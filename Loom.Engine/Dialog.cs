@@ -2,7 +2,7 @@
 
 public class Dialog
 {
-    public BlockNode RootNode { get; set; }
+    public required BlockNode RootNode { get; set; }
     
     public DialogSession StartDialog()
     {

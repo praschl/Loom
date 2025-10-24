@@ -11,10 +11,10 @@ public class DialogSessionTests(ITestOutputHelper console)
     private INode? _lastNode;
 
     private int _linesCount;
-    private Line? _lastLine;
+    private Line _lastLine = null!;
 
     private int _optionsCount;
-    private OptionsList? _lastOptionsList;
+    private OptionsList _lastOptionsList = null!;
     private bool _dialogFinished;
     private bool _dialogStarted;
 
@@ -71,7 +71,7 @@ public class DialogSessionTests(ITestOutputHelper console)
 
         dialogSession.DialogEvents.Log += (text, node) =>
         {
-            console.WriteLine($"{new string(' ', indent)} {text}");
+            console.WriteLine($"{new string(' ', indent)} ({node?.GetType().Name}) {text}");
         };
         
         _dialog = dialogSession;
@@ -80,7 +80,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     [Fact]
     public void Advance_sends_a_line()
     {
-        Setup(TestData.DialogSession.With3Lines().StartDialog());
+        Setup(TestData.DialogSession.With_3_Lines().StartDialog());
 
         _dialog.Advance();
 
@@ -92,7 +92,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     [Fact]
     public void Advance_sends_three_lines_in_order()
     {
-        Setup(TestData.DialogSession.With3Lines().StartDialog());
+        Setup(TestData.DialogSession.With_3_Lines().StartDialog());
 
         // one
         _dialog.Advance();
@@ -119,7 +119,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     [Fact]
     public void Advance_raises_DialogStarted_when_advancing_to_first_line()
     {
-        Setup(TestData.DialogSession.With3Lines().StartDialog());
+        Setup(TestData.DialogSession.With_3_Lines().StartDialog());
 
         _dialog.Advance();
 
@@ -134,7 +134,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     [Fact]
     public void Advance_raises_DialogFinished_when_already_on_last_node()
     {
-        Setup(TestData.DialogSession.With3Lines().StartDialog());
+        Setup(TestData.DialogSession.With_3_Lines().StartDialog());
 
         _dialog.Advance();
         _dialogFinished.Should().BeFalse();
@@ -168,7 +168,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     [Fact]
     public void Advance_raises_DialogFinished_when_already_on_last_node_with_options()
     {
-        Setup(TestData.DialogSession.With1OptionsList().StartDialog());
+        Setup(TestData.DialogSession.With_OptionsList().StartDialog());
 
         _dialog.Advance();
         _dialogFinished.Should().BeFalse();
@@ -188,7 +188,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     [Fact]
     public void Advance_sends_options_after_first_line()
     {
-        Setup(TestData.DialogSession.With1OptionsList().StartDialog());
+        Setup(TestData.DialogSession.With_OptionsList().StartDialog());
 
         _dialog.Advance();
         _dialog.Advance();
@@ -203,7 +203,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     [Fact]
     public void Advance_throws_when_current_node_is_not_a_Line()
     {
-        Setup(TestData.DialogSession.With1OptionsList().StartDialog());
+        Setup(TestData.DialogSession.With_OptionsList().StartDialog());
 
         _dialog.Advance();
         _dialog.Advance();
@@ -215,7 +215,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     [Fact]
     public void SelectOption_throws_when_current_node_is_not_an_OptionList()
     {
-        Setup(TestData.DialogSession.With1OptionsList().StartDialog());
+        Setup(TestData.DialogSession.With_OptionsList().StartDialog());
 
         Action selectOption = () => _dialog.SelectOption(0);
         selectOption.Should().Throw<InvalidOperationException>();
@@ -224,7 +224,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     [Fact]
     public void Advance_visits_nested_BlockNodes()
     {
-        Setup(TestData.DialogSession.With3NestedBlockNodes().StartDialog());
+        Setup(TestData.DialogSession.With_3_nested_BlockNodes().StartDialog());
 
         _dialog.Advance();
         _lastLine.Text.Should().Be("1");
@@ -252,7 +252,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     [Fact]
     public void Advance_throws_when_finished()
     {
-        Setup(TestData.DialogSession.With3Lines().StartDialog());
+        Setup(TestData.DialogSession.With_3_Lines().StartDialog());
 
         _dialog.Advance();
         _dialog.Advance();
@@ -270,7 +270,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     [InlineData(false)]
     public void Advance_goes_into_correct_conditional_block(bool condition)
     {
-        Setup(TestData.DialogSession.With1ConditionalBlock(condition).StartDialog());
+        Setup(TestData.DialogSession.With_ConditionalBlock(condition).StartDialog());
         
         _dialog.Advance();
         _lastLine.Text.Should().Be("Start");
@@ -284,12 +284,35 @@ public class DialogSessionTests(ITestOutputHelper console)
         _dialog.Advance();
         _dialogFinished.Should().BeTrue();
     }
+    
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void Advance_goes_into_correct_conditional_block_with_no_false_block(bool condition)
+    {
+        Setup(TestData.DialogSession.With_ConditionalBlock_where_FalseBlock_is_empty(condition).StartDialog());
+        
+        _dialog.Advance();
+        _lastLine.Text.Should().Be("Start");
+
+        if (condition)
+        {
+            _dialog.Advance();
+            _lastLine.Text.Should().Be($"{condition} line");
+        }
+        
+        _dialog.Advance();
+        _lastLine.Text.Should().Be("End");
+        
+        _dialog.Advance();
+        _dialogFinished.Should().BeTrue();
+    }
 
     [Fact]
     public void Advance_executes_action_and_returns_next_line()
     {
         bool called = false;
-        Setup(TestData.DialogSession.WithAction(() => called = true).StartDialog());
+        Setup(TestData.DialogSession.With_Action(() => called = true).StartDialog());
         
         _dialog.Advance();
         called.Should().BeFalse();
@@ -308,7 +331,7 @@ public class DialogSessionTests(ITestOutputHelper console)
         bool called1 = false;
         bool called2 = false;
         
-        Setup(TestData.DialogSession.With2ActionsAsFinish(() => called1 = true, () => called2 = true).StartDialog());
+        Setup(TestData.DialogSession.With_2_Actions_as_finish(() => called1 = true, () => called2 = true).StartDialog());
         
         _dialog.Advance();
         called1.Should().BeFalse();
@@ -325,7 +348,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     [InlineData(false)]
     public void Advance_returns_evaluated_line(bool condition)
     {
-        Setup(TestData.DialogSession.WithLineTemplate(condition).StartDialog());
+        Setup(TestData.DialogSession.With_Line_with_Fragments(condition).StartDialog());
 
         _dialog.Advance();
 
@@ -339,7 +362,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     [InlineData(false)]
     public void Advance_returns_evaluated_options(bool condition)
     {
-        Setup(TestData.DialogSession.WithOptionsListWithFragments(condition).StartDialog());
+        Setup(TestData.DialogSession.With_OptionsList_with_Fragments(condition).StartDialog());
 
         _dialog.Advance();
         _dialog.Advance();

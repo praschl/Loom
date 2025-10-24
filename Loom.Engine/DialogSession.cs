@@ -117,6 +117,9 @@ public class DialogSession
     {
         switch (_currentNode)
         {
+            case null:
+                return true; 
+            
             case ContentNode contentNode:
                 contentNode.PushContent(DialogEvents);
                 return false;
@@ -126,7 +129,9 @@ public class DialogSession
                 return true;
 
             case ConditionalNode conditional:
-                Activate(conditional.GetCorrectNode());
+                var node = conditional.GetCorrectNode();
+                if (node is not null)
+                    Activate(node);
                 return true;
 
             case ActionNode action:

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace Loom.Engine;
@@ -14,17 +15,17 @@ public readonly record struct LoomValue
     
     public LoomType Type { get; }
 
-    public string StringValue { get; }
-    public decimal NumberValue { get; }
-    public bool BooleanValue { get; }
+    public string? StringValue { get; }
+    public decimal? NumberValue { get; }
+    public bool? BooleanValue { get; }
 
     public override string ToString()
     {
         return Type switch
         {
-            LoomType.String => StringValue,
-            LoomType.Number => NumberValue.ToString(CultureInfo.CurrentCulture),
-            LoomType.Boolean => BooleanValue.ToString(CultureInfo.CurrentCulture),
+            LoomType.String => StringValue!,
+            LoomType.Number => NumberValue!.Value.ToString(CultureInfo.CurrentCulture),
+            LoomType.Boolean => BooleanValue!.Value.ToString(CultureInfo.CurrentCulture),
             _ => throw new UnreachableException()
         };
     }
@@ -47,7 +48,7 @@ public readonly record struct LoomValue
     {
         return Type switch
         {
-            LoomType.String => HashCode.Combine((int)Type, StringValue.GetHashCode()),
+            LoomType.String => HashCode.Combine((int)Type, StringValue!.GetHashCode()),
             LoomType.Number => HashCode.Combine((int)Type, NumberValue.GetHashCode()),
             LoomType.Boolean => HashCode.Combine((int)Type, BooleanValue.GetHashCode()),
             _ => throw new UnreachableException()

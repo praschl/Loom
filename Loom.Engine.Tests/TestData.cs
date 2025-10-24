@@ -6,7 +6,7 @@ public static class TestData
     {
         public static Dialog Empty() => new() { RootNode = new BlockNode("Empty") };
 
-        public static Dialog With3Lines()
+        public static Dialog With_3_Lines()
         {
             return new Dialog
             {
@@ -22,7 +22,7 @@ public static class TestData
             };
         }
 
-        public static Dialog With1OptionsList()
+        public static Dialog With_OptionsList()
         {
             return new Dialog
             {
@@ -38,7 +38,7 @@ public static class TestData
             };
         }
 
-        public static Dialog With3NestedBlockNodes()
+        public static Dialog With_3_nested_BlockNodes()
         {
             return new Dialog
             {
@@ -72,7 +72,7 @@ public static class TestData
             };
         }
 
-        public static Dialog With1ConditionalBlock(bool condition)
+        public static Dialog With_ConditionalBlock(bool condition)
         {
             return new Dialog
             {
@@ -98,8 +98,31 @@ public static class TestData
                 }
             };
         }
+        
+        public static Dialog With_ConditionalBlock_where_FalseBlock_is_empty(bool condition)
+        {
+            return new Dialog
+            {
+                RootNode = new BlockNode("root")
+                {
+                    Children =
+                    {
+                        new LineTemplate("Start"),
+                        new ConditionalNode()
+                        {
+                            Condition = () => condition,
+                            WhenTrue = new BlockNode("true")
+                            {
+                                Children = { new LineTemplate("True line") }
+                            }
+                        },
+                        new LineTemplate("End")
+                    }
+                }
+            };
+        }
 
-        public static Dialog WithAction(Action action)
+        public static Dialog With_Action(Action action)
         {
             return new Dialog
             {
@@ -115,7 +138,7 @@ public static class TestData
             };
         }
         
-        public static Dialog With2ActionsAsFinish(Action action1 , Action action2)
+        public static Dialog With_2_Actions_as_finish(Action action1 , Action action2)
         {
             return new Dialog
             {
@@ -131,7 +154,7 @@ public static class TestData
             };
         }
 
-        public static Dialog WithLineTemplate(bool condition)
+        public static Dialog With_Line_with_Fragments(bool condition)
         {
             return new Dialog
             {
@@ -149,7 +172,7 @@ public static class TestData
             };
         }
         
-        public static Dialog WithOptionsListWithFragments(bool condition)
+        public static Dialog With_OptionsList_with_Fragments(bool condition)
         {
             return new Dialog
             {
