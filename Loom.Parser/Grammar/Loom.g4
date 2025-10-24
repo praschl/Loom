@@ -1,7 +1,21 @@
 grammar Loom; // Define a grammar called CSV
 
-file : line+ ;
+// Parser rules
+file : line+ EOF ;
 
-line : TEXT ;
-    
-TEXT   : ~[,\r\n"]+ ; // TEXT is any character other than ',', '\r' or '\n'
+line
+    : name text     # namedLine
+    | text          # plainLine
+    ;
+
+name : WORD COLON ;
+
+text : (WORD | WS)+ NEWLINE;
+
+// Lexer rules
+COLON : ':' ;
+
+WORD : ([a-z] | [A-Z])+ ; 
+
+WS : [ \t]+ -> skip ;
+NEWLINE : [\r\n]+ ;
