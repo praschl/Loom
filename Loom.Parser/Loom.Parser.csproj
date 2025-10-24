@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Antlr4BuildTasks" Version="12.8.0" PrivateAssets="all"/>
+        <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Antlr4 Include="Grammar\Loom.g4">
+            <Encoding>UTF-8</Encoding>
+            <Error>true</Error>
+            <GAtn>true</GAtn>
+            <Listener>true</Listener>
+            <Package>Loom.Parser</Package>
+            <Visitor>true</Visitor>
+        </Antlr4>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models\" />
+      <Folder Include="Services\" />
+    </ItemGroup>
+
+</Project>
