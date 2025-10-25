@@ -1,1 +1,5 @@
-TEXT=1
+COLON=1
+WORD=2
+WS=3
+NEWLINE=4
+':'=1

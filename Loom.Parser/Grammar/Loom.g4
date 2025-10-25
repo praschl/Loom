@@ -1,21 +1,28 @@
 grammar Loom; // Define a grammar called CSV
 
 // Parser rules
-file : line+ EOF ;
+file : block+ EOF ;
 
-line
-    : name text     # namedLine
-    | text          # plainLine
-    ;
+// blocks
+block      : blockStart line+ blockEnd ;
+
+blockStart : BLOCK_START NL ;
+blockEnd   : BLOCK_END NL ;
+
+// lines
+line : name? text ;
 
 name : WORD+ COLON ;
 
-text : WS* (WORD | WS)+ NEWLINE;
+text : WS* (WORD | WS)+ NL;
 
 // Lexer rules
+
+BLOCK_START : '---' ;
+BLOCK_END   : '===' ;
 
 COLON : ':' ;
 WORD : ~[@{}\r\n[\]: ]+ ; 
 
 WS : [ \t]+ -> skip;
-NEWLINE : [\r\n]+ ;
+NL : [\r\n]+ ;

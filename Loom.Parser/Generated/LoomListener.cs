@@ -42,14 +42,48 @@ public interface ILoomListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFile([NotNull] LoomParser.FileContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="LoomParser.line"/>.
+	/// Enter a parse tree produced by the <c>namedLine</c>
+	/// labeled alternative in <see cref="LoomParser.line"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterLine([NotNull] LoomParser.LineContext context);
+	void EnterNamedLine([NotNull] LoomParser.NamedLineContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="LoomParser.line"/>.
+	/// Exit a parse tree produced by the <c>namedLine</c>
+	/// labeled alternative in <see cref="LoomParser.line"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitLine([NotNull] LoomParser.LineContext context);
+	void ExitNamedLine([NotNull] LoomParser.NamedLineContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>plainLine</c>
+	/// labeled alternative in <see cref="LoomParser.line"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPlainLine([NotNull] LoomParser.PlainLineContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>plainLine</c>
+	/// labeled alternative in <see cref="LoomParser.line"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPlainLine([NotNull] LoomParser.PlainLineContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LoomParser.name"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterName([NotNull] LoomParser.NameContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LoomParser.name"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitName([NotNull] LoomParser.NameContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LoomParser.text"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterText([NotNull] LoomParser.TextContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LoomParser.text"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitText([NotNull] LoomParser.TextContext context);
 }
 } // namespace Generated

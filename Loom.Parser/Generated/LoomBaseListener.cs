@@ -49,17 +49,57 @@ public partial class LoomBaseListener : ILoomListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitFile([NotNull] LoomParser.FileContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="LoomParser.line"/>.
+	/// Enter a parse tree produced by the <c>namedLine</c>
+	/// labeled alternative in <see cref="LoomParser.line"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterLine([NotNull] LoomParser.LineContext context) { }
+	public virtual void EnterNamedLine([NotNull] LoomParser.NamedLineContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="LoomParser.line"/>.
+	/// Exit a parse tree produced by the <c>namedLine</c>
+	/// labeled alternative in <see cref="LoomParser.line"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitLine([NotNull] LoomParser.LineContext context) { }
+	public virtual void ExitNamedLine([NotNull] LoomParser.NamedLineContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>plainLine</c>
+	/// labeled alternative in <see cref="LoomParser.line"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPlainLine([NotNull] LoomParser.PlainLineContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>plainLine</c>
+	/// labeled alternative in <see cref="LoomParser.line"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPlainLine([NotNull] LoomParser.PlainLineContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LoomParser.name"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterName([NotNull] LoomParser.NameContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LoomParser.name"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitName([NotNull] LoomParser.NameContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LoomParser.text"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterText([NotNull] LoomParser.TextContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LoomParser.text"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitText([NotNull] LoomParser.TextContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

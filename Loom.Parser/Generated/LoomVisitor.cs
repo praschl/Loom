@@ -39,10 +39,30 @@ public interface ILoomVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFile([NotNull] LoomParser.FileContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LoomParser.line"/>.
+	/// Visit a parse tree produced by the <c>namedLine</c>
+	/// labeled alternative in <see cref="LoomParser.line"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitLine([NotNull] LoomParser.LineContext context);
+	Result VisitNamedLine([NotNull] LoomParser.NamedLineContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>plainLine</c>
+	/// labeled alternative in <see cref="LoomParser.line"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPlainLine([NotNull] LoomParser.PlainLineContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="LoomParser.name"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitName([NotNull] LoomParser.NameContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="LoomParser.text"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitText([NotNull] LoomParser.TextContext context);
 }
 } // namespace Generated
