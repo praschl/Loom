@@ -8,14 +8,14 @@ line
     | text          # plainLine
     ;
 
-name : WORD COLON ;
+name : WORD+ COLON ;
 
-text : (WORD | WS)+ NEWLINE;
+text : WS* (WORD | WS)+ NEWLINE;
 
 // Lexer rules
+
 COLON : ':' ;
+WORD : ~[@{}\r\n[\]: ]+ ; 
 
-WORD : ([a-z] | [A-Z])+ ; 
-
-WS : [ \t]+ -> skip ;
+WS : [ \t]+ -> skip;
 NEWLINE : [\r\n]+ ;
