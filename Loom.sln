@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loom.Engine.Tests", "Loom.E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loom.Parser", "Loom.Parser\Loom.Parser.csproj", "{673E7681-98A5-4BFE-A17B-AB50F8588069}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loom.Parser.Tests", "Loom.Parser.Tests\Loom.Parser.Tests.csproj", "{2F5D4F90-5BAC-449D-9F30-6AFF01E3A253}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{3E07DBB6-F722-4886-8EE0-57D77B813FA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,9 @@ Global
 		{673E7681-98A5-4BFE-A17B-AB50F8588069}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{673E7681-98A5-4BFE-A17B-AB50F8588069}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{673E7681-98A5-4BFE-A17B-AB50F8588069}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F5D4F90-5BAC-449D-9F30-6AFF01E3A253}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F5D4F90-5BAC-449D-9F30-6AFF01E3A253}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F5D4F90-5BAC-449D-9F30-6AFF01E3A253}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F5D4F90-5BAC-449D-9F30-6AFF01E3A253}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

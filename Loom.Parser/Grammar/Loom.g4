@@ -4,25 +4,36 @@ grammar Loom; // Define a grammar called CSV
 file : block+ EOF ;
 
 // blocks
-block      : blockStart line+ blockEnd ;
+block      : Title=title
+             Tags=tags?
+             blockStart
+             line+
+             blockEnd
+             ;
+
+title : 'title' WS* COLON WS* Text=plainLine NL;
+tags  : 'tags' WS* COLON words+ NL ;
 
 blockStart : BLOCK_START NL ;
-blockEnd   : BLOCK_END NL ;
+blockEnd   : BLOCK_END NL* ;
 
-// lines
-line : name? text ;
+// text
+
+line : name? plainLine NL ;
 
 name : WORD+ COLON ;
 
-text : WS* (WORD | WS)+ NL;
+plainLine : WS* (WORD | WS)+;
+
+words : (WS | Word=WORD);
 
 // Lexer rules
 
-BLOCK_START : '---' ;
-BLOCK_END   : '===' ;
+BLOCK_START : '-' '-' '-' '-'* ;
+BLOCK_END   : '=' '=' '=' '='* ;
+
+WORD      : ~[@{}\r\n[\]: ]+ ; 
 
 COLON : ':' ;
-WORD : ~[@{}\r\n[\]: ]+ ; 
-
-WS : [ \t]+ -> skip;
-NL : [\r\n]+ ;
+WS    : [ \t]+  ;
+NL    : [\r\n]+ ;
