@@ -2,7 +2,7 @@
 
 namespace Loom.Engine;
 
-public record Line(string Text) : ContentNode
+public record Line(string Text) : ContentSegment
 {
     public override void PushContent(IDialogEvents sharedEvents)
     {
@@ -15,7 +15,7 @@ public record LineTemplate : ITemplate
     public IReadOnlyCollection<IFragment>? Fragments { get; set; }
     public string? LiteralText { get; set; }
     
-    public INode Evaluate()
+    public ISegment Evaluate()
     {
         if (!string.IsNullOrEmpty(LiteralText))
             return new Line(LiteralText);

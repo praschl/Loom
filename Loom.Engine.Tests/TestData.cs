@@ -4,13 +4,13 @@ public static class TestData
 {
     public static class DialogSession
     {
-        public static Dialog Empty() => new() { RootNode = new BlockNode("Empty") };
+        public static Dialog Empty() => new() { RootSegment = new BlockSegment("Empty") };
 
         public static Dialog With_3_Lines()
         {
             return new Dialog
             {
-                RootNode = new BlockNode("With3Lines")
+                RootSegment = new BlockSegment("With3Lines")
                 {
                     Children =
                     {
@@ -26,7 +26,7 @@ public static class TestData
         {
             return new Dialog
             {
-                RootNode = new BlockNode("With1OptionsList")
+                RootSegment = new BlockSegment("With1OptionsList")
                 {
                     Children =
                     {
@@ -38,26 +38,26 @@ public static class TestData
             };
         }
 
-        public static Dialog With_3_nested_BlockNodes()
+        public static Dialog With_3_nested_BlockSegments()
         {
             return new Dialog
             {
-                RootNode = new BlockNode("root")
+                RootSegment = new BlockSegment("root")
                 {
                     Children =
                     {
                         new LineTemplate("1"),
-                        new BlockNode("B in 1")
+                        new BlockSegment("B in 1")
                         {
                             Children =
                             {
                                 new LineTemplate("1.1"),
-                                new BlockNode("B in 1.1")
+                                new BlockSegment("B in 1.1")
                                 {
                                     Children =
                                     {
                                         new LineTemplate("1.1.1"),
-                                        new BlockNode("B in 1.1.1")
+                                        new BlockSegment("B in 1.1.1")
                                         {
                                         },
                                         new LineTemplate("1.1.2"),
@@ -76,19 +76,19 @@ public static class TestData
         {
             return new Dialog
             {
-                RootNode = new BlockNode("root")
+                RootSegment = new BlockSegment("root")
                 {
                     Children =
                     {
                         new LineTemplate("Start"),
-                        new ConditionalNode()
+                        new ConditionalSegment()
                         {
                             Condition = () => condition,
-                            WhenTrue = new BlockNode("true")
+                            WhenTrue = new BlockSegment("true")
                             {
                                 Children = { new LineTemplate("True line") }
                             },
-                            WhenFalse = new BlockNode("false")
+                            WhenFalse = new BlockSegment("false")
                             {
                                 Children = { new LineTemplate("False line") }
                             }
@@ -103,15 +103,15 @@ public static class TestData
         {
             return new Dialog
             {
-                RootNode = new BlockNode("root")
+                RootSegment = new BlockSegment("root")
                 {
                     Children =
                     {
                         new LineTemplate("Start"),
-                        new ConditionalNode()
+                        new ConditionalSegment()
                         {
                             Condition = () => condition,
-                            WhenTrue = new BlockNode("true")
+                            WhenTrue = new BlockSegment("true")
                             {
                                 Children = { new LineTemplate("True line") }
                             }
@@ -126,12 +126,12 @@ public static class TestData
         {
             return new Dialog
             {
-                RootNode = new BlockNode("root")
+                RootSegment = new BlockSegment("root")
                 {
                     Children =
                     {
                         new LineTemplate("Start"),
-                        new ActionNode(action) { Name = "TestAction" },
+                        new ActionSegment(action) { Name = "TestAction" },
                         new LineTemplate("End")
                     }
                 }
@@ -142,13 +142,13 @@ public static class TestData
         {
             return new Dialog
             {
-                RootNode = new BlockNode("root")
+                RootSegment = new BlockSegment("root")
                 {
                     Children =
                     {
                         new LineTemplate("Start"),
-                        new ActionNode(action1) { Name = "TestAction 1" },
-                        new ActionNode(action2) { Name = "TestAction 2" }
+                        new ActionSegment(action1) { Name = "TestAction 1" },
+                        new ActionSegment(action2) { Name = "TestAction 2" }
                     }
                 }
             };
@@ -158,7 +158,7 @@ public static class TestData
         {
             return new Dialog
             {
-                RootNode = new BlockNode("root")
+                RootSegment = new BlockSegment("root")
                 {
                     Children =
                     {
@@ -176,7 +176,7 @@ public static class TestData
         {
             return new Dialog
             {
-                RootNode = new BlockNode("With1OptionsList")
+                RootSegment = new BlockSegment("With1OptionsList")
                 {
                     Children =
                     {

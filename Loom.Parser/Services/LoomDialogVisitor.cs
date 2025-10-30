@@ -1,42 +1,26 @@
-﻿using Antlr4.Runtime.Tree;
+﻿using Loom.Parser.Models;
 
 namespace Loom.Parser.Services;
 
-public class ParsedFile
-{
-    public List<ParsedBlock>? ParsedBlocks { get; set; }
-}
-
-public class ParsedBlock
-{
-    public string? Title { get; set; }
-    public List<string>? Tags { get; set; }
-}
-
 public class LoomDialogVisitor : LoomBaseVisitor<object>
 {
-    public override ParsedFile Visit(IParseTree tree)
+    public override FileNode VisitFile(LoomParser.FileContext context)
     {
-        return (ParsedFile)base.Visit(tree);
-    }
-
-    public override ParsedFile VisitFile(LoomParser.FileContext context)
-    {
-        ParsedFile file = new()
+        FileNode fileNode = new()
         {
             ParsedBlocks = context.block().Select(VisitBlock).ToList()
         };
 
-        return file;
+        return fileNode;
     }
 
-    public override ParsedBlock VisitBlock(LoomParser.BlockContext context)
+    public override BlockNode VisitBlock(LoomParser.BlockContext context)
     {
         var title = context.title().Text;
         var tags = context.tags();
         var lines = context.line();
 
-        return new ParsedBlock
+        return new BlockNode
         {
             Title = title.GetText(),
             Tags = tags?.words().Select(t => t.GetText()).ToList(),

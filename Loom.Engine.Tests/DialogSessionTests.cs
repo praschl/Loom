@@ -7,8 +7,8 @@ public class DialogSessionTests(ITestOutputHelper console)
 {
     private DialogSession _dialog = null!;
 
-    private int _nodesCount;
-    private INode? _lastNode;
+    private int _segmentsCount;
+    private ISegment? _lastSegment;
 
     private int _linesCount;
     private Line _lastLine = null!;
@@ -20,7 +20,7 @@ public class DialogSessionTests(ITestOutputHelper console)
 
     private void Setup(DialogSession dialogSession)
     {
-        // NOTE: StartDialog() will not send a node!
+        // NOTE: StartDialog() will not send a segment!
         // this is still the low level implementation without UI or Components
 
         int indent = 0;
@@ -41,19 +41,19 @@ public class DialogSessionTests(ITestOutputHelper console)
         dialogSession.DialogEvents.LineReceived += line =>
         {
             console.WriteLine($"{new string(' ', indent)}Line received: {line}");
-            _nodesCount++;
+            _segmentsCount++;
             _linesCount++;
             _lastLine = line;
-            _lastNode = line;
+            _lastSegment = line;
         };
 
         dialogSession.DialogEvents.OptionsReceived += options =>
         {
             console.WriteLine($"{new string(' ', indent)}Options received: {options}");
-            _nodesCount++;
+            _segmentsCount++;
             _optionsCount++;
             _lastOptionsList = options;
-            _lastNode = options;
+            _lastSegment = options;
         };
         
         dialogSession.DialogEvents.BlockFinishing += bl =>
@@ -69,9 +69,9 @@ public class DialogSessionTests(ITestOutputHelper console)
             _dialogFinished = true;
         };
 
-        dialogSession.DialogEvents.Log += (text, node) =>
+        dialogSession.DialogEvents.Log += (text, segment) =>
         {
-            console.WriteLine($"{new string(' ', indent)} ({node?.GetType().Name}) {text}");
+            console.WriteLine($"{new string(' ', indent)} ({segment?.GetType().Name}) {text}");
         };
         
         _dialog = dialogSession;
@@ -84,7 +84,7 @@ public class DialogSessionTests(ITestOutputHelper console)
 
         _dialog.Advance();
 
-        _nodesCount.Should().Be(1);
+        _segmentsCount.Should().Be(1);
         _linesCount.Should().Be(1);
         _lastLine.Text.Should().Be("One");
     }
@@ -97,21 +97,21 @@ public class DialogSessionTests(ITestOutputHelper console)
         // one
         _dialog.Advance();
 
-        _nodesCount.Should().Be(1);
+        _segmentsCount.Should().Be(1);
         _linesCount.Should().Be(1);
         _lastLine.Text.Should().Be("One");
 
         // two
         _dialog.Advance();
 
-        _nodesCount.Should().Be(2);
+        _segmentsCount.Should().Be(2);
         _linesCount.Should().Be(2);
         _lastLine.Text.Should().Be("Two");
 
         // three
         _dialog.Advance();
 
-        _nodesCount.Should().Be(3);
+        _segmentsCount.Should().Be(3);
         _linesCount.Should().Be(3);
         _lastLine.Text.Should().Be("Three");
     }
@@ -132,7 +132,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     }
 
     [Fact]
-    public void Advance_raises_DialogFinished_when_already_on_last_node()
+    public void Advance_raises_DialogFinished_when_already_on_last_segment()
     {
         Setup(TestData.DialogSession.With_3_Lines().StartDialog());
 
@@ -166,7 +166,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     }
 
     [Fact]
-    public void Advance_raises_DialogFinished_when_already_on_last_node_with_options()
+    public void Advance_raises_DialogFinished_when_already_on_last_segment_with_options()
     {
         Setup(TestData.DialogSession.With_OptionsList().StartDialog());
 
@@ -196,12 +196,12 @@ public class DialogSessionTests(ITestOutputHelper console)
         _linesCount.Should().Be(1);
         _optionsCount.Should().Be(1);
 
-        _lastNode.Should().BeOfType<OptionsList>();
+        _lastSegment.Should().BeOfType<OptionsList>();
         _lastOptionsList.Options.Should().HaveCount(3);
     }
 
     [Fact]
-    public void Advance_throws_when_current_node_is_not_a_Line()
+    public void Advance_throws_when_current_segment_is_not_a_Line()
     {
         Setup(TestData.DialogSession.With_OptionsList().StartDialog());
 
@@ -213,7 +213,7 @@ public class DialogSessionTests(ITestOutputHelper console)
     }
 
     [Fact]
-    public void SelectOption_throws_when_current_node_is_not_an_OptionList()
+    public void SelectOption_throws_when_current_segment_is_not_an_OptionList()
     {
         Setup(TestData.DialogSession.With_OptionsList().StartDialog());
 
@@ -222,9 +222,9 @@ public class DialogSessionTests(ITestOutputHelper console)
     }
 
     [Fact]
-    public void Advance_visits_nested_BlockNodes()
+    public void Advance_visits_nested_BlockSegments()
     {
-        Setup(TestData.DialogSession.With_3_nested_BlockNodes().StartDialog());
+        Setup(TestData.DialogSession.With_3_nested_BlockSegments().StartDialog());
 
         _dialog.Advance();
         _lastLine.Text.Should().Be("1");

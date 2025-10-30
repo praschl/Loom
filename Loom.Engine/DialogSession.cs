@@ -2,14 +2,14 @@
 
 public class DialogSession
 {
-    private INode? _currentNode;
-    private BlockNode _currentBlock;
-    private readonly Stack<BlockNode> _blockNodes = [];
+    private ISegment? _currentSegment;
+    private BlockSegment _currentBlock;
+    private readonly Stack<BlockSegment> _blockSegments = [];
     private bool _finished;
 
-    public DialogSession(BlockNode rootNode, DialogEvents? events = null)
+    public DialogSession(BlockSegment rootSegment, DialogEvents? events = null)
     {
-        _currentBlock = rootNode ?? throw new ArgumentNullException(nameof(rootNode));
+        _currentBlock = rootSegment ?? throw new ArgumentNullException(nameof(rootSegment));
         DialogEvents = events ?? new DialogEvents();
     }
 
@@ -19,9 +19,9 @@ public class DialogSession
     {
         AssertNotFinished();
 
-        if (_currentNode is not null and not Line)
+        if (_currentSegment is not null and not Line)
         {
-            throw new InvalidOperationException($"Cannot use advance on {_currentNode.GetType()}");
+            throw new InvalidOperationException($"Cannot use advance on {_currentSegment.GetType()}");
         }
 
         Continue();
@@ -31,17 +31,17 @@ public class DialogSession
     {
         AssertNotFinished();
 
-        if (_currentNode is null)
+        if (_currentSegment is null)
         {
             throw new InvalidOperationException($"Cannot use SelectOption when dialog hasn't started");
         }
 
-        if (_currentNode is not OptionsList)
+        if (_currentSegment is not OptionsList)
         {
-            throw new InvalidOperationException($"Cannot use SelectOption on {_currentNode.GetType()}");
+            throw new InvalidOperationException($"Cannot use SelectOption on {_currentSegment.GetType()}");
         }
 
-        // set variables or select next node group or whatever here
+        // set variables or select next segment group or whatever here
 
         Continue();
     }
@@ -50,19 +50,19 @@ public class DialogSession
     {
         while (true)
         {
-            var node = ActivateNextNode();
+            var segment = ActivateNextSegment();
 
-            // the new node could be a function call or setting a variable
+            // the new segment could be a function call or setting a variable
             // in this case we have already executed it, but we didn't get new content for display
 
-            if (node is null or ContentNode)
+            if (segment is null or ContentSegment)
             {
                 break;
             }
         }
     }
 
-    private INode? ActivateNextNode()
+    private ISegment? ActivateNextSegment()
     {
         while (true)
         {
@@ -74,25 +74,25 @@ public class DialogSession
                 continue;
             }
 
-            bool isFirstNode = _currentNode is null;
-            _currentNode = _currentBlock.GetNextNode();
+            bool isFirstsegment = _currentSegment is null;
+            _currentSegment = _currentBlock.GetNextSegment();
 
-            if (isFirstNode)
+            if (isFirstsegment)
             {
                 DialogEvents.OnDialogStarted();
                 _currentBlock.Starting(DialogEvents);
             }
 
-            if (HandleCurrentNode())
+            if (HandleCurrentSegment())
                 continue;
 
-            return _currentNode;
+            return _currentSegment;
         }
     }
 
     private bool HandleExhaustedBlock()
     {
-        if (_currentNode is null)
+        if (_currentSegment is null)
         {
             // Root block was empty
             DialogEvents.OnDialogStarted();
@@ -101,7 +101,7 @@ public class DialogSession
 
         _currentBlock.Finishing(DialogEvents);
 
-        if (!_blockNodes.TryPop(out var parentBlock))
+        if (!_blockSegments.TryPop(out var parentBlock))
         {
             // No more blocks → dialog finished
             DialogEvents.OnDialogFinished();
@@ -113,41 +113,41 @@ public class DialogSession
         return true;
     }
 
-    private bool HandleCurrentNode()
+    private bool HandleCurrentSegment()
     {
-        switch (_currentNode)
+        switch (_currentSegment)
         {
             case null:
                 return true; 
             
-            case ContentNode contentNode:
-                contentNode.PushContent(DialogEvents);
+            case ContentSegment contentSegment:
+                contentSegment.PushContent(DialogEvents);
                 return false;
 
-            case BlockNode blockNode:
-                Activate(blockNode);
+            case BlockSegment blockSegment:
+                Activate(blockSegment);
                 return true;
 
-            case ConditionalNode conditional:
-                var node = conditional.GetCorrectNode();
-                if (node is not null)
-                    Activate(node);
+            case ConditionalSegment conditional:
+                var segment = conditional.GetCorrectSegment();
+                if (segment is not null)
+                    Activate(segment);
                 return true;
 
-            case ActionNode action:
+            case ActionSegment action:
                 DialogEvents.OnLog($"Starting action {action.Name}", action);
                 action.Execute();
                 DialogEvents.OnLog($"Finished action {action.Name}", action);
                 return true;
             
             default:
-                throw new NotImplementedException($"No handler implemented for {_currentNode.GetType()}");
+                throw new NotSupportedException($"{_currentSegment.GetType()} is not supported.");
         }
 
-        void Activate(BlockNode blockNode)
+        void Activate(BlockSegment blockSegment)
         {
-            _blockNodes.Push(_currentBlock);
-            _currentBlock = blockNode;
+            _blockSegments.Push(_currentBlock);
+            _currentBlock = blockSegment;
             _currentBlock.Starting(DialogEvents);
         }
     }

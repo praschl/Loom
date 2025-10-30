@@ -2,12 +2,12 @@
 
 public interface ITemplate
 {
-    INode Evaluate();
+    ISegment Evaluate();
 }
 
-public interface INode;
+public interface ISegment;
 
-public abstract record ContentNode : INode
+public abstract record ContentSegment : ISegment
 {
     public abstract void PushContent(IDialogEvents events);
 }

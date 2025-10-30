@@ -2,10 +2,10 @@
 
 public class Dialog
 {
-    public required BlockNode RootNode { get; set; }
+    public required BlockSegment RootSegment { get; set; }
     
     public DialogSession StartDialog()
     {
-        return new DialogSession(RootNode);
+        return new DialogSession(RootSegment);
     }
 }

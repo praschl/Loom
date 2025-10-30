@@ -4,7 +4,7 @@ namespace Loom.Engine;
 
 public record Option(string Text);
 
-public record OptionsList(params List<Option> Options) : ContentNode
+public record OptionsList(params List<Option> Options) : ContentSegment
 {
     public override void PushContent(IDialogEvents sharedEvents)
     {
@@ -13,7 +13,7 @@ public record OptionsList(params List<Option> Options) : ContentNode
 }
 
 
-public record OptionTemplate : INode
+public record OptionTemplate : ISegment
 {
     public IReadOnlyCollection<IFragment>? Fragments { get; set; }
     public string? LiteralText { get; set; }
@@ -49,7 +49,7 @@ public record OptionTemplate : INode
 
 public record OptionsListTemplate(params List<OptionTemplate> Options) : ITemplate
 {
-    public INode Evaluate()
+    public ISegment Evaluate()
     {
         var options = Options.Select(o => o.Evaluate());
         return new OptionsList(options.ToList());

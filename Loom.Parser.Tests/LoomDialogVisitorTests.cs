@@ -38,7 +38,7 @@ public class LoomDialogVisitorTests
 
         // Act
         var visitor = new LoomDialogVisitor();
-        var file = visitor.Visit(tree);
+        var file = visitor.VisitFile(tree);
         
         // Assert
         Assert.NotNull(tree);
