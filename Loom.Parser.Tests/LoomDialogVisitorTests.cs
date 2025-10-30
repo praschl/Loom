@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using FluentAssertions;
 using Loom.Parser.Services;
 
 namespace Loom.Parser.Tests;
@@ -37,10 +38,13 @@ public class LoomDialogVisitorTests
 
         // Act
         var visitor = new LoomDialogVisitor();
-        visitor.Visit(tree);
+        var file = visitor.Visit(tree);
         
         // Assert
         Assert.NotNull(tree);
         Assert.Equal(0, parser.NumberOfSyntaxErrors);
+
+        file.Should().NotBeNull();
+        file.ParsedBlocks.Count.Should().Be(2);
     }
 }
