@@ -45,6 +45,8 @@ public class LoomDialogVisitorTests
         Assert.Equal(0, parser.NumberOfSyntaxErrors);
 
         file.Should().NotBeNull();
-        file.ParsedBlocks.Count.Should().Be(2);
+        file.ParsedBlocks.Should().NotBeNull();
+        file.ParsedBlocks.Should().HaveCount(2);
+        file.ParsedBlocks[0].Tags.Should().BeEquivalentTo(["eins", "zwei", "drei"]);
     }
 }

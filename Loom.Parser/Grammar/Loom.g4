@@ -12,28 +12,31 @@ block      : Title=title
              ;
 
 title : 'title' WS* COLON WS* Text=plainLine NL;
-tags  : 'tags' WS* COLON words+ NL ;
+tags  : 'tags' WS* COLON plainWords+ NL ;
+
+plainLine : WS* (WORD | WS)+;
+plainWords : op=(WS | WORD);
 
 blockStart : BLOCK_START NL ;
 blockEnd   : BLOCK_END NL* ;
 
 // text
 
-line : name? plainLine NL ;
+line : name? dialogLine NL ;
 
 name : WORD+ COLON ;
 
-plainLine : WS* (WORD | WS)+;
-
-words : (WS | Word=WORD);
+dialogLine : WS*(WORD | WS )+ ;
 
 // Lexer rules
 
 BLOCK_START : '-' '-' '-' '-'* ;
 BLOCK_END   : '=' '=' '=' '='* ;
 
-WORD      : ~[@{}\r\n[\]: ]+ ; 
+WORD        : ~[@{}\r\n[\]: ]+ ; 
 
-COLON : ':' ;
+AT          : '@' ;
+COLON       : ':' ;
+
 WS    : [ \t]+  ;
 NL    : [\r\n]+ ;

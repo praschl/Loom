@@ -23,7 +23,12 @@ public class LoomDialogVisitor : LoomBaseVisitor<object>
         return new BlockNode
         {
             Title = title.GetText(),
-            Tags = tags?.words().Select(t => t.GetText()).ToList(),
+            Tags = tags?.plainWords().Where(w=>w.op.Type == LoomParser.WORD).Select(VisitPlainWords).ToList()
         };
+    }
+
+    public override string VisitPlainWords(LoomParser.PlainWordsContext context)
+    {
+        return context.GetText();
     }
 }
