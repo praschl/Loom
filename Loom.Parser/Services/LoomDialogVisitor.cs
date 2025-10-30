@@ -17,18 +17,40 @@ public class LoomDialogVisitor : LoomBaseVisitor<object>
     public override BlockNode VisitBlock(LoomParser.BlockContext context)
     {
         var title = context.title().Text;
-        var tags = context.tags();
-        var lines = context.line();
+        var tags = context.tags()?.plainWords().Where(w => w.op.Type == LoomParser.WORD).Select(VisitPlainWords).ToList();
+        var lines = context.line().Select(VisitLine).ToList();
 
         return new BlockNode
         {
             Title = title.GetText(),
-            Tags = tags?.plainWords().Where(w=>w.op.Type == LoomParser.WORD).Select(VisitPlainWords).ToList()
+            Tags = tags,
+            Lines = lines
         };
+    }
+
+    public override LineNode VisitLine(LoomParser.LineContext context)
+    {
+        var sentences = context.dialogLine().textFragment().Select(VisitTextFragment).ToList();
+
+        var lineNode = new LineNode
+        {
+            Speaker = context.name?.Text,
+            Fragments = sentences,
+        };
+        
+        return lineNode;
     }
 
     public override string VisitPlainWords(LoomParser.PlainWordsContext context)
     {
         return context.GetText();
+    }
+
+    public override LineNode.ILineNodeFragment VisitTextFragment(LoomParser.TextFragmentContext context)
+    {
+        return new LineNode.TextFragment
+        {
+            Text = context.GetText()
+        };
     }
 }

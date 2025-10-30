@@ -47,6 +47,9 @@ public class LoomDialogVisitorTests
         file.Should().NotBeNull();
         file.ParsedBlocks.Should().NotBeNull();
         file.ParsedBlocks.Should().HaveCount(2);
+        file.ParsedBlocks[0].Title.Should().Be("Grossvaters Haus");
         file.ParsedBlocks[0].Tags.Should().BeEquivalentTo(["eins", "zwei", "drei"]);
+        file.ParsedBlocks[0].Lines[0].Speaker.Should().Be("Michael");
+        file.ParsedBlocks[0].Lines[1].Speaker.Should().Be("Chris");
     }
 }

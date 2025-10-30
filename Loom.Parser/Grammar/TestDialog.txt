@@ -1,8 +1,9 @@
 ﻿title: Grossvater
 tags: eins zwei drei
 ---
-Michael: Hallo Welt!
-Chris: Hi ebenfalls, das geht!
+{$var1 = "Das ist ein Satz!"}
+Michael: {$var1} Welt!
+Chris: Hi ebenfalls{$var1} , das geht!
 ===
 
 title: noch was anderes

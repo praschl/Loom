@@ -12,29 +12,32 @@ block      : Title=title
              ;
 
 title : 'title' WS* COLON WS* Text=plainLine NL;
-tags  : 'tags' WS* COLON plainWords+ NL ;
+tags  : 'tags' WS* COLON WS* plainWords+ NL ;
 
-plainLine : WS* (WORD | WS)+;
-plainWords : op=(WS | WORD);
+plainLine  : WS* textFragment;
+plainWords : op=(WS | WORD); // we do not use sentence here, because we really want the words separated by spaces
 
 blockStart : BLOCK_START NL ;
 blockEnd   : BLOCK_END NL* ;
 
 // text
 
-line : name? dialogLine NL ;
+line : (name=WORD COLON)? (dialogLine | statement) NL ;
 
-name : WORD+ COLON ;
+dialogLine : WS* (textFragment | template )+ ;
 
-dialogLine : WS*(WORD | WS )+ ;
+statement  : '{$' 'var1' WS* '=' WS* '"' textFragment* '"' '}';
+template   : '{$' 'var1' '}' ;
+
+textFragment   : op=(WORD | WS)+ ;
 
 // Lexer rules
 
 BLOCK_START : '-' '-' '-' '-'* ;
 BLOCK_END   : '=' '=' '=' '='* ;
 
-WORD        : ~[@{}\r\n[\]: ]+ ; 
-
+WORD        : ~[@{}\r\n[\]": ]+ ; 
+    
 AT          : '@' ;
 COLON       : ':' ;
 
