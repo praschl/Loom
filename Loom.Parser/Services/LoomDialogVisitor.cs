@@ -30,7 +30,16 @@ public class LoomDialogVisitor : LoomBaseVisitor<object>
 
     public override LineNode VisitLine(LoomParser.LineContext context)
     {
-        var sentences = context.dialogLine().textFragment().Select(VisitTextFragment).ToList();
+        var line = context.dialogLine();
+        if (line != null)
+            return VisitDialogLine(line);
+
+        throw new NotSupportedException(context.ToString());
+    }
+
+    public override LineNode VisitDialogLine(LoomParser.DialogLineContext context)
+    {
+        var sentences = context.textFragment().Select(VisitTextFragment).ToList();
 
         var lineNode = new LineNode
         {

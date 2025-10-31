@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from D:/Dev/Loom/Loom.Parser/Grammar/Loom.g4 by ANTLR 4.13.2
+// Generated from D:/Dev/Loom/Loom.Parser/Grammar/LoomParser.g4 by ANTLR 4.13.2
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -37,18 +37,26 @@ public partial class LoomParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		COLON=1, WORD=2, WS=3, NEWLINE=4;
+		TITLE=1, TAGS=2, BLOCK_START=3, BLOCK_END=4, WORD=5, AT=6, COLON=7, WS=8, 
+		NL=9, BRACE_OPEN=10, BRACE_CLOSE=11, VAR_PREFIX=12, EQUALS=13, TESTVAR=14, 
+		WHITE=15, STRING_LITERAL=16;
 	public const int
-		RULE_file = 0, RULE_line = 1, RULE_name = 2, RULE_text = 3;
+		RULE_file = 0, RULE_block = 1, RULE_title = 2, RULE_tags = 3, RULE_plainLine = 4, 
+		RULE_plainWords = 5, RULE_blockStart = 6, RULE_blockEnd = 7, RULE_line = 8, 
+		RULE_dialogLine = 9, RULE_statement = 10, RULE_template = 11, RULE_textFragment = 12;
 	public static readonly string[] ruleNames = {
-		"file", "line", "name", "text"
+		"file", "block", "title", "tags", "plainLine", "plainWords", "blockStart", 
+		"blockEnd", "line", "dialogLine", "statement", "template", "textFragment"
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "':'"
+		null, "'title'", "'tags'", null, null, null, "'@'", "':'", null, null, 
+		"'{'", "'}'", "'$'", "'='", "'var1'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, "COLON", "WORD", "WS", "NEWLINE"
+		null, "TITLE", "TAGS", "BLOCK_START", "BLOCK_END", "WORD", "AT", "COLON", 
+		"WS", "NL", "BRACE_OPEN", "BRACE_CLOSE", "VAR_PREFIX", "EQUALS", "TESTVAR", 
+		"WHITE", "STRING_LITERAL"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -61,7 +69,7 @@ public partial class LoomParser : Parser {
 		}
 	}
 
-	public override string GrammarFileName { get { return "Loom.g4"; } }
+	public override string GrammarFileName { get { return "LoomParser.g4"; } }
 
 	public override string[] RuleNames { get { return ruleNames; } }
 
@@ -84,11 +92,11 @@ public partial class LoomParser : Parser {
 
 	public partial class FileContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Eof() { return GetToken(LoomParser.Eof, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public LineContext[] line() {
-			return GetRuleContexts<LineContext>();
+		[System.Diagnostics.DebuggerNonUserCode] public BlockContext[] block() {
+			return GetRuleContexts<BlockContext>();
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public LineContext line(int i) {
-			return GetRuleContext<LineContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode] public BlockContext block(int i) {
+			return GetRuleContext<BlockContext>(i);
 		}
 		public FileContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -97,17 +105,17 @@ public partial class LoomParser : Parser {
 		public override int RuleIndex { get { return RULE_file; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
-			ILoomListener typedListener = listener as ILoomListener;
+			ILoomParserListener typedListener = listener as ILoomParserListener;
 			if (typedListener != null) typedListener.EnterFile(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
-			ILoomListener typedListener = listener as ILoomListener;
+			ILoomParserListener typedListener = listener as ILoomParserListener;
 			if (typedListener != null) typedListener.ExitFile(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ILoomVisitor<TResult> typedVisitor = visitor as ILoomVisitor<TResult>;
+			ILoomParserVisitor<TResult> typedVisitor = visitor as ILoomParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitFile(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -121,21 +129,21 @@ public partial class LoomParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 9;
+			State = 27;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 8;
-				line();
+				State = 26;
+				block();
 				}
 				}
-				State = 11;
+				State = 29;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-			} while ( _la==WORD || _la==WS );
-			State = 13;
+			} while ( _la==TITLE );
+			State = 31;
 			Match(Eof);
 			}
 		}
@@ -150,62 +158,580 @@ public partial class LoomParser : Parser {
 		return _localctx;
 	}
 
+	public partial class BlockContext : ParserRuleContext {
+		public TitleContext Title;
+		public TagsContext Tags;
+		[System.Diagnostics.DebuggerNonUserCode] public BlockStartContext blockStart() {
+			return GetRuleContext<BlockStartContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public BlockEndContext blockEnd() {
+			return GetRuleContext<BlockEndContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public TitleContext title() {
+			return GetRuleContext<TitleContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public LineContext[] line() {
+			return GetRuleContexts<LineContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public LineContext line(int i) {
+			return GetRuleContext<LineContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public TagsContext tags() {
+			return GetRuleContext<TagsContext>(0);
+		}
+		public BlockContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_block; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.EnterBlock(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.ExitBlock(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ILoomParserVisitor<TResult> typedVisitor = visitor as ILoomParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitBlock(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public BlockContext block() {
+		BlockContext _localctx = new BlockContext(Context, State);
+		EnterRule(_localctx, 2, RULE_block);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 33;
+			_localctx.Title = title();
+			State = 35;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			if (_la==TAGS) {
+				{
+				State = 34;
+				_localctx.Tags = tags();
+				}
+			}
+
+			State = 37;
+			blockStart();
+			State = 39;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			do {
+				{
+				{
+				State = 38;
+				line();
+				}
+				}
+				State = 41;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 1312L) != 0) );
+			State = 43;
+			blockEnd();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class TitleContext : ParserRuleContext {
+		public PlainLineContext Text;
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TITLE() { return GetToken(LoomParser.TITLE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode COLON() { return GetToken(LoomParser.COLON, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NL() { return GetToken(LoomParser.NL, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public PlainLineContext plainLine() {
+			return GetRuleContext<PlainLineContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] WS() { return GetTokens(LoomParser.WS); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WS(int i) {
+			return GetToken(LoomParser.WS, i);
+		}
+		public TitleContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_title; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.EnterTitle(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.ExitTitle(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ILoomParserVisitor<TResult> typedVisitor = visitor as ILoomParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitTitle(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public TitleContext title() {
+		TitleContext _localctx = new TitleContext(Context, State);
+		EnterRule(_localctx, 4, RULE_title);
+		int _la;
+		try {
+			int _alt;
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 45;
+			Match(TITLE);
+			State = 49;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==WS) {
+				{
+				{
+				State = 46;
+				Match(WS);
+				}
+				}
+				State = 51;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 52;
+			Match(COLON);
+			State = 56;
+			ErrorHandler.Sync(this);
+			_alt = Interpreter.AdaptivePredict(TokenStream,4,Context);
+			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					State = 53;
+					Match(WS);
+					}
+					} 
+				}
+				State = 58;
+				ErrorHandler.Sync(this);
+				_alt = Interpreter.AdaptivePredict(TokenStream,4,Context);
+			}
+			State = 59;
+			_localctx.Text = plainLine();
+			State = 60;
+			Match(NL);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class TagsContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TAGS() { return GetToken(LoomParser.TAGS, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode COLON() { return GetToken(LoomParser.COLON, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NL() { return GetToken(LoomParser.NL, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] WS() { return GetTokens(LoomParser.WS); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WS(int i) {
+			return GetToken(LoomParser.WS, i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public PlainWordsContext[] plainWords() {
+			return GetRuleContexts<PlainWordsContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public PlainWordsContext plainWords(int i) {
+			return GetRuleContext<PlainWordsContext>(i);
+		}
+		public TagsContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_tags; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.EnterTags(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.ExitTags(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ILoomParserVisitor<TResult> typedVisitor = visitor as ILoomParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitTags(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public TagsContext tags() {
+		TagsContext _localctx = new TagsContext(Context, State);
+		EnterRule(_localctx, 6, RULE_tags);
+		int _la;
+		try {
+			int _alt;
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 62;
+			Match(TAGS);
+			State = 66;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==WS) {
+				{
+				{
+				State = 63;
+				Match(WS);
+				}
+				}
+				State = 68;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 69;
+			Match(COLON);
+			State = 73;
+			ErrorHandler.Sync(this);
+			_alt = Interpreter.AdaptivePredict(TokenStream,6,Context);
+			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					State = 70;
+					Match(WS);
+					}
+					} 
+				}
+				State = 75;
+				ErrorHandler.Sync(this);
+				_alt = Interpreter.AdaptivePredict(TokenStream,6,Context);
+			}
+			State = 77;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			do {
+				{
+				{
+				State = 76;
+				plainWords();
+				}
+				}
+				State = 79;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			} while ( _la==WORD || _la==WS );
+			State = 81;
+			Match(NL);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class PlainLineContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public TextFragmentContext textFragment() {
+			return GetRuleContext<TextFragmentContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] WS() { return GetTokens(LoomParser.WS); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WS(int i) {
+			return GetToken(LoomParser.WS, i);
+		}
+		public PlainLineContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_plainLine; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.EnterPlainLine(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.ExitPlainLine(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ILoomParserVisitor<TResult> typedVisitor = visitor as ILoomParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitPlainLine(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public PlainLineContext plainLine() {
+		PlainLineContext _localctx = new PlainLineContext(Context, State);
+		EnterRule(_localctx, 8, RULE_plainLine);
+		try {
+			int _alt;
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 86;
+			ErrorHandler.Sync(this);
+			_alt = Interpreter.AdaptivePredict(TokenStream,8,Context);
+			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					State = 83;
+					Match(WS);
+					}
+					} 
+				}
+				State = 88;
+				ErrorHandler.Sync(this);
+				_alt = Interpreter.AdaptivePredict(TokenStream,8,Context);
+			}
+			State = 89;
+			textFragment();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class PlainWordsContext : ParserRuleContext {
+		public IToken op;
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WS() { return GetToken(LoomParser.WS, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WORD() { return GetToken(LoomParser.WORD, 0); }
+		public PlainWordsContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_plainWords; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.EnterPlainWords(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.ExitPlainWords(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ILoomParserVisitor<TResult> typedVisitor = visitor as ILoomParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitPlainWords(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public PlainWordsContext plainWords() {
+		PlainWordsContext _localctx = new PlainWordsContext(Context, State);
+		EnterRule(_localctx, 10, RULE_plainWords);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 91;
+			_localctx.op = TokenStream.LT(1);
+			_la = TokenStream.LA(1);
+			if ( !(_la==WORD || _la==WS) ) {
+				_localctx.op = ErrorHandler.RecoverInline(this);
+			}
+			else {
+				ErrorHandler.ReportMatch(this);
+			    Consume();
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class BlockStartContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BLOCK_START() { return GetToken(LoomParser.BLOCK_START, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NL() { return GetToken(LoomParser.NL, 0); }
+		public BlockStartContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_blockStart; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.EnterBlockStart(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.ExitBlockStart(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ILoomParserVisitor<TResult> typedVisitor = visitor as ILoomParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitBlockStart(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public BlockStartContext blockStart() {
+		BlockStartContext _localctx = new BlockStartContext(Context, State);
+		EnterRule(_localctx, 12, RULE_blockStart);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 93;
+			Match(BLOCK_START);
+			State = 94;
+			Match(NL);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class BlockEndContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BLOCK_END() { return GetToken(LoomParser.BLOCK_END, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] NL() { return GetTokens(LoomParser.NL); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NL(int i) {
+			return GetToken(LoomParser.NL, i);
+		}
+		public BlockEndContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_blockEnd; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.EnterBlockEnd(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.ExitBlockEnd(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ILoomParserVisitor<TResult> typedVisitor = visitor as ILoomParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitBlockEnd(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public BlockEndContext blockEnd() {
+		BlockEndContext _localctx = new BlockEndContext(Context, State);
+		EnterRule(_localctx, 14, RULE_blockEnd);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 96;
+			Match(BLOCK_END);
+			State = 100;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==NL) {
+				{
+				{
+				State = 97;
+				Match(NL);
+				}
+				}
+				State = 102;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
 	public partial class LineContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NL() { return GetToken(LoomParser.NL, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public DialogLineContext dialogLine() {
+			return GetRuleContext<DialogLineContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public StatementContext statement() {
+			return GetRuleContext<StatementContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] WS() { return GetTokens(LoomParser.WS); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WS(int i) {
+			return GetToken(LoomParser.WS, i);
+		}
 		public LineContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_line; } }
-	 
-		public LineContext() { }
-		public virtual void CopyFrom(LineContext context) {
-			base.CopyFrom(context);
-		}
-	}
-	public partial class NamedLineContext : LineContext {
-		[System.Diagnostics.DebuggerNonUserCode] public NameContext name() {
-			return GetRuleContext<NameContext>(0);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public TextContext text() {
-			return GetRuleContext<TextContext>(0);
-		}
-		public NamedLineContext(LineContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
-			ILoomListener typedListener = listener as ILoomListener;
-			if (typedListener != null) typedListener.EnterNamedLine(this);
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.EnterLine(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
-			ILoomListener typedListener = listener as ILoomListener;
-			if (typedListener != null) typedListener.ExitNamedLine(this);
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.ExitLine(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ILoomVisitor<TResult> typedVisitor = visitor as ILoomVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitNamedLine(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-	public partial class PlainLineContext : LineContext {
-		[System.Diagnostics.DebuggerNonUserCode] public TextContext text() {
-			return GetRuleContext<TextContext>(0);
-		}
-		public PlainLineContext(LineContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			ILoomListener typedListener = listener as ILoomListener;
-			if (typedListener != null) typedListener.EnterPlainLine(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			ILoomListener typedListener = listener as ILoomListener;
-			if (typedListener != null) typedListener.ExitPlainLine(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ILoomVisitor<TResult> typedVisitor = visitor as ILoomVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitPlainLine(this);
+			ILoomParserVisitor<TResult> typedVisitor = visitor as ILoomParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitLine(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -213,29 +739,45 @@ public partial class LoomParser : Parser {
 	[RuleVersion(0)]
 	public LineContext line() {
 		LineContext _localctx = new LineContext(Context, State);
-		EnterRule(_localctx, 2, RULE_line);
+		EnterRule(_localctx, 16, RULE_line);
 		try {
-			State = 19;
+			int _alt;
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 106;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,1,Context) ) {
+			_alt = Interpreter.AdaptivePredict(TokenStream,10,Context);
+			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					State = 103;
+					Match(WS);
+					}
+					} 
+				}
+				State = 108;
+				ErrorHandler.Sync(this);
+				_alt = Interpreter.AdaptivePredict(TokenStream,10,Context);
+			}
+			State = 111;
+			ErrorHandler.Sync(this);
+			switch ( Interpreter.AdaptivePredict(TokenStream,11,Context) ) {
 			case 1:
-				_localctx = new NamedLineContext(_localctx);
-				EnterOuterAlt(_localctx, 1);
 				{
-				State = 15;
-				name();
-				State = 16;
-				text();
+				State = 109;
+				dialogLine();
 				}
 				break;
 			case 2:
-				_localctx = new PlainLineContext(_localctx);
-				EnterOuterAlt(_localctx, 2);
 				{
-				State = 18;
-				text();
+				State = 110;
+				statement();
 				}
 				break;
+			}
+			State = 113;
+			Match(NL);
 			}
 		}
 		catch (RecognitionException re) {
@@ -249,59 +791,94 @@ public partial class LoomParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NameContext : ParserRuleContext {
+	public partial class DialogLineContext : ParserRuleContext {
+		public IToken name;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode COLON() { return GetToken(LoomParser.COLON, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] WORD() { return GetTokens(LoomParser.WORD); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WORD(int i) {
-			return GetToken(LoomParser.WORD, i);
+		[System.Diagnostics.DebuggerNonUserCode] public TextFragmentContext[] textFragment() {
+			return GetRuleContexts<TextFragmentContext>();
 		}
-		public NameContext(ParserRuleContext parent, int invokingState)
+		[System.Diagnostics.DebuggerNonUserCode] public TextFragmentContext textFragment(int i) {
+			return GetRuleContext<TextFragmentContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public TemplateContext[] template() {
+			return GetRuleContexts<TemplateContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public TemplateContext template(int i) {
+			return GetRuleContext<TemplateContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WORD() { return GetToken(LoomParser.WORD, 0); }
+		public DialogLineContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_name; } }
+		public override int RuleIndex { get { return RULE_dialogLine; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
-			ILoomListener typedListener = listener as ILoomListener;
-			if (typedListener != null) typedListener.EnterName(this);
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.EnterDialogLine(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
-			ILoomListener typedListener = listener as ILoomListener;
-			if (typedListener != null) typedListener.ExitName(this);
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.ExitDialogLine(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ILoomVisitor<TResult> typedVisitor = visitor as ILoomVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitName(this);
+			ILoomParserVisitor<TResult> typedVisitor = visitor as ILoomParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitDialogLine(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public NameContext name() {
-		NameContext _localctx = new NameContext(Context, State);
-		EnterRule(_localctx, 4, RULE_name);
+	public DialogLineContext dialogLine() {
+		DialogLineContext _localctx = new DialogLineContext(Context, State);
+		EnterRule(_localctx, 18, RULE_dialogLine);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 22;
+			State = 117;
+			ErrorHandler.Sync(this);
+			switch ( Interpreter.AdaptivePredict(TokenStream,12,Context) ) {
+			case 1:
+				{
+				State = 115;
+				_localctx.name = Match(WORD);
+				State = 116;
+				Match(COLON);
+				}
+				break;
+			}
+			State = 121;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
-				{
-				State = 21;
-				Match(WORD);
+				State = 121;
+				ErrorHandler.Sync(this);
+				switch (TokenStream.LA(1)) {
+				case WORD:
+				case WS:
+					{
+					State = 119;
+					textFragment();
+					}
+					break;
+				case BRACE_OPEN:
+					{
+					State = 120;
+					template();
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
 				}
 				}
-				State = 24;
+				State = 123;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-			} while ( _la==WORD );
-			State = 26;
-			Match(COLON);
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 1312L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -315,87 +892,194 @@ public partial class LoomParser : Parser {
 		return _localctx;
 	}
 
-	public partial class TextContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NEWLINE() { return GetToken(LoomParser.NEWLINE, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] WS() { return GetTokens(LoomParser.WS); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WS(int i) {
-			return GetToken(LoomParser.WS, i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] WORD() { return GetTokens(LoomParser.WORD); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WORD(int i) {
-			return GetToken(LoomParser.WORD, i);
-		}
-		public TextContext(ParserRuleContext parent, int invokingState)
+	public partial class StatementContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BRACE_OPEN() { return GetToken(LoomParser.BRACE_OPEN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode VAR_PREFIX() { return GetToken(LoomParser.VAR_PREFIX, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TESTVAR() { return GetToken(LoomParser.TESTVAR, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EQUALS() { return GetToken(LoomParser.EQUALS, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode STRING_LITERAL() { return GetToken(LoomParser.STRING_LITERAL, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BRACE_CLOSE() { return GetToken(LoomParser.BRACE_CLOSE, 0); }
+		public StatementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_text; } }
+		public override int RuleIndex { get { return RULE_statement; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
-			ILoomListener typedListener = listener as ILoomListener;
-			if (typedListener != null) typedListener.EnterText(this);
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.EnterStatement(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
-			ILoomListener typedListener = listener as ILoomListener;
-			if (typedListener != null) typedListener.ExitText(this);
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.ExitStatement(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ILoomVisitor<TResult> typedVisitor = visitor as ILoomVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitText(this);
+			ILoomParserVisitor<TResult> typedVisitor = visitor as ILoomParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitStatement(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public TextContext text() {
-		TextContext _localctx = new TextContext(Context, State);
-		EnterRule(_localctx, 6, RULE_text);
+	public StatementContext statement() {
+		StatementContext _localctx = new StatementContext(Context, State);
+		EnterRule(_localctx, 20, RULE_statement);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 125;
+			Match(BRACE_OPEN);
+			State = 126;
+			Match(VAR_PREFIX);
+			State = 127;
+			Match(TESTVAR);
+			State = 128;
+			Match(EQUALS);
+			State = 129;
+			Match(STRING_LITERAL);
+			State = 130;
+			Match(BRACE_CLOSE);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class TemplateContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BRACE_OPEN() { return GetToken(LoomParser.BRACE_OPEN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode VAR_PREFIX() { return GetToken(LoomParser.VAR_PREFIX, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TESTVAR() { return GetToken(LoomParser.TESTVAR, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BRACE_CLOSE() { return GetToken(LoomParser.BRACE_CLOSE, 0); }
+		public TemplateContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_template; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.EnterTemplate(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.ExitTemplate(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ILoomParserVisitor<TResult> typedVisitor = visitor as ILoomParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitTemplate(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public TemplateContext template() {
+		TemplateContext _localctx = new TemplateContext(Context, State);
+		EnterRule(_localctx, 22, RULE_template);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 132;
+			Match(BRACE_OPEN);
+			State = 133;
+			Match(VAR_PREFIX);
+			State = 134;
+			Match(TESTVAR);
+			State = 135;
+			Match(BRACE_CLOSE);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class TextFragmentContext : ParserRuleContext {
+		public IToken op;
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] WORD() { return GetTokens(LoomParser.WORD); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WORD(int i) {
+			return GetToken(LoomParser.WORD, i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] WS() { return GetTokens(LoomParser.WS); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WS(int i) {
+			return GetToken(LoomParser.WS, i);
+		}
+		public TextFragmentContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_textFragment; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.EnterTextFragment(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILoomParserListener typedListener = listener as ILoomParserListener;
+			if (typedListener != null) typedListener.ExitTextFragment(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ILoomParserVisitor<TResult> typedVisitor = visitor as ILoomParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitTextFragment(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public TextFragmentContext textFragment() {
+		TextFragmentContext _localctx = new TextFragmentContext(Context, State);
+		EnterRule(_localctx, 24, RULE_textFragment);
 		int _la;
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 31;
+			State = 138;
 			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,3,Context);
-			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
-				if ( _alt==1 ) {
-					{
-					{
-					State = 28;
-					Match(WS);
-					}
-					} 
-				}
-				State = 33;
-				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,3,Context);
-			}
-			State = 35;
-			ErrorHandler.Sync(this);
-			_la = TokenStream.LA(1);
+			_alt = 1;
 			do {
-				{
-				{
-				State = 34;
-				_la = TokenStream.LA(1);
-				if ( !(_la==WORD || _la==WS) ) {
-				ErrorHandler.RecoverInline(this);
+				switch (_alt) {
+				case 1:
+					{
+					{
+					State = 137;
+					_localctx.op = TokenStream.LT(1);
+					_la = TokenStream.LA(1);
+					if ( !(_la==WORD || _la==WS) ) {
+						_localctx.op = ErrorHandler.RecoverInline(this);
+					}
+					else {
+						ErrorHandler.ReportMatch(this);
+					    Consume();
+					}
+					}
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
 				}
-				else {
-					ErrorHandler.ReportMatch(this);
-				    Consume();
-				}
-				}
-				}
-				State = 37;
+				State = 140;
 				ErrorHandler.Sync(this);
-				_la = TokenStream.LA(1);
-			} while ( _la==WORD || _la==WS );
-			State = 39;
-			Match(NEWLINE);
+				_alt = Interpreter.AdaptivePredict(TokenStream,15,Context);
+			} while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER );
 			}
 		}
 		catch (RecognitionException re) {
@@ -410,18 +1094,49 @@ public partial class LoomParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,4,42,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,1,0,4,0,10,8,0,11,0,12,0,11,1,
-		0,1,0,1,1,1,1,1,1,1,1,3,1,20,8,1,1,2,4,2,23,8,2,11,2,12,2,24,1,2,1,2,1,
-		3,5,3,30,8,3,10,3,12,3,33,9,3,1,3,4,3,36,8,3,11,3,12,3,37,1,3,1,3,1,3,
-		0,0,4,0,2,4,6,0,1,1,0,2,3,42,0,9,1,0,0,0,2,19,1,0,0,0,4,22,1,0,0,0,6,31,
-		1,0,0,0,8,10,3,2,1,0,9,8,1,0,0,0,10,11,1,0,0,0,11,9,1,0,0,0,11,12,1,0,
-		0,0,12,13,1,0,0,0,13,14,5,0,0,1,14,1,1,0,0,0,15,16,3,4,2,0,16,17,3,6,3,
-		0,17,20,1,0,0,0,18,20,3,6,3,0,19,15,1,0,0,0,19,18,1,0,0,0,20,3,1,0,0,0,
-		21,23,5,2,0,0,22,21,1,0,0,0,23,24,1,0,0,0,24,22,1,0,0,0,24,25,1,0,0,0,
-		25,26,1,0,0,0,26,27,5,1,0,0,27,5,1,0,0,0,28,30,5,3,0,0,29,28,1,0,0,0,30,
-		33,1,0,0,0,31,29,1,0,0,0,31,32,1,0,0,0,32,35,1,0,0,0,33,31,1,0,0,0,34,
-		36,7,0,0,0,35,34,1,0,0,0,36,37,1,0,0,0,37,35,1,0,0,0,37,38,1,0,0,0,38,
-		39,1,0,0,0,39,40,5,4,0,0,40,7,1,0,0,0,5,11,19,24,31,37
+		4,1,16,143,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,1,0,4,0,28,8,0,11,0,
+		12,0,29,1,0,1,0,1,1,1,1,3,1,36,8,1,1,1,1,1,4,1,40,8,1,11,1,12,1,41,1,1,
+		1,1,1,2,1,2,5,2,48,8,2,10,2,12,2,51,9,2,1,2,1,2,5,2,55,8,2,10,2,12,2,58,
+		9,2,1,2,1,2,1,2,1,3,1,3,5,3,65,8,3,10,3,12,3,68,9,3,1,3,1,3,5,3,72,8,3,
+		10,3,12,3,75,9,3,1,3,4,3,78,8,3,11,3,12,3,79,1,3,1,3,1,4,5,4,85,8,4,10,
+		4,12,4,88,9,4,1,4,1,4,1,5,1,5,1,6,1,6,1,6,1,7,1,7,5,7,99,8,7,10,7,12,7,
+		102,9,7,1,8,5,8,105,8,8,10,8,12,8,108,9,8,1,8,1,8,3,8,112,8,8,1,8,1,8,
+		1,9,1,9,3,9,118,8,9,1,9,1,9,4,9,122,8,9,11,9,12,9,123,1,10,1,10,1,10,1,
+		10,1,10,1,10,1,10,1,11,1,11,1,11,1,11,1,11,1,12,4,12,139,8,12,11,12,12,
+		12,140,1,12,0,0,13,0,2,4,6,8,10,12,14,16,18,20,22,24,0,1,2,0,5,5,8,8,145,
+		0,27,1,0,0,0,2,33,1,0,0,0,4,45,1,0,0,0,6,62,1,0,0,0,8,86,1,0,0,0,10,91,
+		1,0,0,0,12,93,1,0,0,0,14,96,1,0,0,0,16,106,1,0,0,0,18,117,1,0,0,0,20,125,
+		1,0,0,0,22,132,1,0,0,0,24,138,1,0,0,0,26,28,3,2,1,0,27,26,1,0,0,0,28,29,
+		1,0,0,0,29,27,1,0,0,0,29,30,1,0,0,0,30,31,1,0,0,0,31,32,5,0,0,1,32,1,1,
+		0,0,0,33,35,3,4,2,0,34,36,3,6,3,0,35,34,1,0,0,0,35,36,1,0,0,0,36,37,1,
+		0,0,0,37,39,3,12,6,0,38,40,3,16,8,0,39,38,1,0,0,0,40,41,1,0,0,0,41,39,
+		1,0,0,0,41,42,1,0,0,0,42,43,1,0,0,0,43,44,3,14,7,0,44,3,1,0,0,0,45,49,
+		5,1,0,0,46,48,5,8,0,0,47,46,1,0,0,0,48,51,1,0,0,0,49,47,1,0,0,0,49,50,
+		1,0,0,0,50,52,1,0,0,0,51,49,1,0,0,0,52,56,5,7,0,0,53,55,5,8,0,0,54,53,
+		1,0,0,0,55,58,1,0,0,0,56,54,1,0,0,0,56,57,1,0,0,0,57,59,1,0,0,0,58,56,
+		1,0,0,0,59,60,3,8,4,0,60,61,5,9,0,0,61,5,1,0,0,0,62,66,5,2,0,0,63,65,5,
+		8,0,0,64,63,1,0,0,0,65,68,1,0,0,0,66,64,1,0,0,0,66,67,1,0,0,0,67,69,1,
+		0,0,0,68,66,1,0,0,0,69,73,5,7,0,0,70,72,5,8,0,0,71,70,1,0,0,0,72,75,1,
+		0,0,0,73,71,1,0,0,0,73,74,1,0,0,0,74,77,1,0,0,0,75,73,1,0,0,0,76,78,3,
+		10,5,0,77,76,1,0,0,0,78,79,1,0,0,0,79,77,1,0,0,0,79,80,1,0,0,0,80,81,1,
+		0,0,0,81,82,5,9,0,0,82,7,1,0,0,0,83,85,5,8,0,0,84,83,1,0,0,0,85,88,1,0,
+		0,0,86,84,1,0,0,0,86,87,1,0,0,0,87,89,1,0,0,0,88,86,1,0,0,0,89,90,3,24,
+		12,0,90,9,1,0,0,0,91,92,7,0,0,0,92,11,1,0,0,0,93,94,5,3,0,0,94,95,5,9,
+		0,0,95,13,1,0,0,0,96,100,5,4,0,0,97,99,5,9,0,0,98,97,1,0,0,0,99,102,1,
+		0,0,0,100,98,1,0,0,0,100,101,1,0,0,0,101,15,1,0,0,0,102,100,1,0,0,0,103,
+		105,5,8,0,0,104,103,1,0,0,0,105,108,1,0,0,0,106,104,1,0,0,0,106,107,1,
+		0,0,0,107,111,1,0,0,0,108,106,1,0,0,0,109,112,3,18,9,0,110,112,3,20,10,
+		0,111,109,1,0,0,0,111,110,1,0,0,0,112,113,1,0,0,0,113,114,5,9,0,0,114,
+		17,1,0,0,0,115,116,5,5,0,0,116,118,5,7,0,0,117,115,1,0,0,0,117,118,1,0,
+		0,0,118,121,1,0,0,0,119,122,3,24,12,0,120,122,3,22,11,0,121,119,1,0,0,
+		0,121,120,1,0,0,0,122,123,1,0,0,0,123,121,1,0,0,0,123,124,1,0,0,0,124,
+		19,1,0,0,0,125,126,5,10,0,0,126,127,5,12,0,0,127,128,5,14,0,0,128,129,
+		5,13,0,0,129,130,5,16,0,0,130,131,5,11,0,0,131,21,1,0,0,0,132,133,5,10,
+		0,0,133,134,5,12,0,0,134,135,5,14,0,0,135,136,5,11,0,0,136,23,1,0,0,0,
+		137,139,7,0,0,0,138,137,1,0,0,0,139,140,1,0,0,0,140,138,1,0,0,0,140,141,
+		1,0,0,0,141,25,1,0,0,0,16,29,35,41,49,56,66,73,79,86,100,106,111,117,121,
+		123,140
 	};
 
 	public static readonly ATN _ATN =
