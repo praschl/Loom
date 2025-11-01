@@ -30,7 +30,7 @@ line : WS* (dialogLine | statement) NL ;
 
 dialogLine : (name=WORD COLON)? WS* (textFragment | template )+ ;
 
-statement  : BRACE_OPEN VAR_PREFIX TESTVAR EQUALS STRING_LITERAL BRACE_CLOSE;
-template   : BRACE_OPEN VAR_PREFIX TESTVAR BRACE_CLOSE ;
+statement  : LBRACE VAR_PREFIX TESTVAR EQUALS STRING_LITERAL RBRACE;
+template   : LBRACE VAR_PREFIX TESTVAR RBRACE ;
 
 textFragment   : op=(WORD | WS)+ ;

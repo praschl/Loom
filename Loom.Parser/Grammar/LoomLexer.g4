@@ -17,10 +17,10 @@ WS          : WS_CHAR ;
 NL          : [\r\n]+ ;
 
 // --- BRACES ---
-BRACE_OPEN   : '{' -> pushMode(BRACES) ;
+LBRACE       : '{' -> pushMode(BRACES) ;
 
 mode BRACES;
-BRACE_CLOSE  : '}' -> popMode ;
+RBRACE       : '}' -> popMode ;
 VAR_PREFIX   : '$' ;
 EQUALS       : '=' ;
 

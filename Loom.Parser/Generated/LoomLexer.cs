@@ -35,8 +35,8 @@ public partial class LoomLexer : Lexer {
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
 		TITLE=1, TAGS=2, BLOCK_START=3, BLOCK_END=4, WORD=5, AT=6, COLON=7, WS=8, 
-		NL=9, BRACE_OPEN=10, BRACE_CLOSE=11, VAR_PREFIX=12, EQUALS=13, BRACES_WS=14, 
-		STRING_LITERAL=15, TESTVAR=16;
+		NL=9, LBRACE=10, RBRACE=11, VAR_PREFIX=12, EQUALS=13, BRACES_WS=14, STRING_LITERAL=15, 
+		TESTVAR=16;
 	public const int
 		BRACES=1;
 	public static string[] channelNames = {
@@ -49,8 +49,8 @@ public partial class LoomLexer : Lexer {
 
 	public static readonly string[] ruleNames = {
 		"WS_CHAR", "TITLE", "TAGS", "BLOCK_START", "BLOCK_END", "WORD", "AT", 
-		"COLON", "WS", "NL", "BRACE_OPEN", "BRACE_CLOSE", "VAR_PREFIX", "EQUALS", 
-		"BRACES_WS", "STRING_LITERAL", "TESTVAR"
+		"COLON", "WS", "NL", "LBRACE", "RBRACE", "VAR_PREFIX", "EQUALS", "BRACES_WS", 
+		"STRING_LITERAL", "TESTVAR"
 	};
 
 
@@ -69,8 +69,8 @@ public partial class LoomLexer : Lexer {
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, "TITLE", "TAGS", "BLOCK_START", "BLOCK_END", "WORD", "AT", "COLON", 
-		"WS", "NL", "BRACE_OPEN", "BRACE_CLOSE", "VAR_PREFIX", "EQUALS", "BRACES_WS", 
-		"STRING_LITERAL", "TESTVAR"
+		"WS", "NL", "LBRACE", "RBRACE", "VAR_PREFIX", "EQUALS", "BRACES_WS", "STRING_LITERAL", 
+		"TESTVAR"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
