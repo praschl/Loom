@@ -28,9 +28,9 @@ blockEnd   : BLOCK_END NL* ;
 
 line : WS* (dialogLine | statement) NL ;
 
-dialogLine : (name=WORD COLON)? WS* (textFragment | template )+ ;
+dialogLine : (name=WORD COLON)? WS* (textFragment | expr )+ ;
 
 statement  : LBRACE VAR_PREFIX TESTVAR EQUALS STRING_LITERAL RBRACE;
-template   : LBRACE VAR_PREFIX TESTVAR RBRACE ;
+expr   : LBRACE VAR_PREFIX TESTVAR RBRACE ;
 
 textFragment   : op=(WORD | WS)+ ;
