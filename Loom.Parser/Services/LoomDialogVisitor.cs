@@ -1,8 +1,9 @@
-﻿using Loom.Parser.Models;
+﻿using Generated;
+using Loom.Parser.Models;
 
 namespace Loom.Parser.Services;
 
-public class LoomDialogVisitor : LoomBaseVisitor<object>
+public class LoomDialogVisitor : LoomParserBaseVisitor<object>
 {
     public override FileNode VisitFile(LoomParser.FileContext context)
     {

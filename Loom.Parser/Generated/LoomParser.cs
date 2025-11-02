@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from D:/Dev/Loom/Loom.Parser/Grammar/LoomParser.g4 by ANTLR 4.13.2
+// Generated from D:/Dev/Projects/Loom/Loom.Parser/Grammar/LoomParser.g4 by ANTLR 4.13.2
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -38,25 +38,25 @@ public partial class LoomParser : Parser {
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
 		TITLE=1, TAGS=2, BLOCK_START=3, BLOCK_END=4, WORD=5, AT=6, COLON=7, WS=8, 
-		NL=9, BRACE_OPEN=10, BRACE_CLOSE=11, VAR_PREFIX=12, EQUALS=13, TESTVAR=14, 
-		WHITE=15, STRING_LITERAL=16;
+		NL=9, LBRACE=10, RBRACE=11, VAR_PREFIX=12, EQUALS=13, BRACES_WS=14, STRING_LITERAL=15, 
+		TESTVAR=16;
 	public const int
 		RULE_file = 0, RULE_block = 1, RULE_title = 2, RULE_tags = 3, RULE_plainLine = 4, 
 		RULE_plainWords = 5, RULE_blockStart = 6, RULE_blockEnd = 7, RULE_line = 8, 
-		RULE_dialogLine = 9, RULE_statement = 10, RULE_template = 11, RULE_textFragment = 12;
+		RULE_dialogLine = 9, RULE_statement = 10, RULE_expr = 11, RULE_textFragment = 12;
 	public static readonly string[] ruleNames = {
 		"file", "block", "title", "tags", "plainLine", "plainWords", "blockStart", 
-		"blockEnd", "line", "dialogLine", "statement", "template", "textFragment"
+		"blockEnd", "line", "dialogLine", "statement", "expr", "textFragment"
 	};
 
 	private static readonly string[] _LiteralNames = {
 		null, "'title'", "'tags'", null, null, null, "'@'", "':'", null, null, 
-		"'{'", "'}'", "'$'", "'='", "'var1'"
+		"'{'", "'}'", "'$'", "'='", null, null, "'var1'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, "TITLE", "TAGS", "BLOCK_START", "BLOCK_END", "WORD", "AT", "COLON", 
-		"WS", "NL", "BRACE_OPEN", "BRACE_CLOSE", "VAR_PREFIX", "EQUALS", "TESTVAR", 
-		"WHITE", "STRING_LITERAL"
+		"WS", "NL", "LBRACE", "RBRACE", "VAR_PREFIX", "EQUALS", "BRACES_WS", "STRING_LITERAL", 
+		"TESTVAR"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -794,17 +794,21 @@ public partial class LoomParser : Parser {
 	public partial class DialogLineContext : ParserRuleContext {
 		public IToken name;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode COLON() { return GetToken(LoomParser.COLON, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] WS() { return GetTokens(LoomParser.WS); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WS(int i) {
+			return GetToken(LoomParser.WS, i);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public TextFragmentContext[] textFragment() {
 			return GetRuleContexts<TextFragmentContext>();
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public TextFragmentContext textFragment(int i) {
 			return GetRuleContext<TextFragmentContext>(i);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public TemplateContext[] template() {
-			return GetRuleContexts<TemplateContext>();
+		[System.Diagnostics.DebuggerNonUserCode] public ExprContext[] expr() {
+			return GetRuleContexts<ExprContext>();
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public TemplateContext template(int i) {
-			return GetRuleContext<TemplateContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode] public ExprContext expr(int i) {
+			return GetRuleContext<ExprContext>(i);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WORD() { return GetToken(LoomParser.WORD, 0); }
 		public DialogLineContext(ParserRuleContext parent, int invokingState)
@@ -836,6 +840,7 @@ public partial class LoomParser : Parser {
 		EnterRule(_localctx, 18, RULE_dialogLine);
 		int _la;
 		try {
+			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 117;
@@ -850,32 +855,48 @@ public partial class LoomParser : Parser {
 				}
 				break;
 			}
-			State = 121;
+			State = 122;
+			ErrorHandler.Sync(this);
+			_alt = Interpreter.AdaptivePredict(TokenStream,13,Context);
+			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					{
+					{
+					State = 119;
+					Match(WS);
+					}
+					} 
+				}
+				State = 124;
+				ErrorHandler.Sync(this);
+				_alt = Interpreter.AdaptivePredict(TokenStream,13,Context);
+			}
+			State = 127;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
-				State = 121;
+				State = 127;
 				ErrorHandler.Sync(this);
 				switch (TokenStream.LA(1)) {
 				case WORD:
 				case WS:
 					{
-					State = 119;
+					State = 125;
 					textFragment();
 					}
 					break;
-				case BRACE_OPEN:
+				case LBRACE:
 					{
-					State = 120;
-					template();
+					State = 126;
+					expr();
 					}
 					break;
 				default:
 					throw new NoViableAltException(this);
 				}
 				}
-				State = 123;
+				State = 129;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 1312L) != 0) );
@@ -893,12 +914,12 @@ public partial class LoomParser : Parser {
 	}
 
 	public partial class StatementContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BRACE_OPEN() { return GetToken(LoomParser.BRACE_OPEN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LBRACE() { return GetToken(LoomParser.LBRACE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode VAR_PREFIX() { return GetToken(LoomParser.VAR_PREFIX, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TESTVAR() { return GetToken(LoomParser.TESTVAR, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EQUALS() { return GetToken(LoomParser.EQUALS, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode STRING_LITERAL() { return GetToken(LoomParser.STRING_LITERAL, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BRACE_CLOSE() { return GetToken(LoomParser.BRACE_CLOSE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RBRACE() { return GetToken(LoomParser.RBRACE, 0); }
 		public StatementContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -929,18 +950,18 @@ public partial class LoomParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 125;
-			Match(BRACE_OPEN);
-			State = 126;
+			State = 131;
+			Match(LBRACE);
+			State = 132;
 			Match(VAR_PREFIX);
-			State = 127;
+			State = 133;
 			Match(TESTVAR);
-			State = 128;
+			State = 134;
 			Match(EQUALS);
-			State = 129;
+			State = 135;
 			Match(STRING_LITERAL);
-			State = 130;
-			Match(BRACE_CLOSE);
+			State = 136;
+			Match(RBRACE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -954,49 +975,49 @@ public partial class LoomParser : Parser {
 		return _localctx;
 	}
 
-	public partial class TemplateContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BRACE_OPEN() { return GetToken(LoomParser.BRACE_OPEN, 0); }
+	public partial class ExprContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LBRACE() { return GetToken(LoomParser.LBRACE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode VAR_PREFIX() { return GetToken(LoomParser.VAR_PREFIX, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TESTVAR() { return GetToken(LoomParser.TESTVAR, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BRACE_CLOSE() { return GetToken(LoomParser.BRACE_CLOSE, 0); }
-		public TemplateContext(ParserRuleContext parent, int invokingState)
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RBRACE() { return GetToken(LoomParser.RBRACE, 0); }
+		public ExprContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_template; } }
+		public override int RuleIndex { get { return RULE_expr; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ILoomParserListener typedListener = listener as ILoomParserListener;
-			if (typedListener != null) typedListener.EnterTemplate(this);
+			if (typedListener != null) typedListener.EnterExpr(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ILoomParserListener typedListener = listener as ILoomParserListener;
-			if (typedListener != null) typedListener.ExitTemplate(this);
+			if (typedListener != null) typedListener.ExitExpr(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ILoomParserVisitor<TResult> typedVisitor = visitor as ILoomParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitTemplate(this);
+			if (typedVisitor != null) return typedVisitor.VisitExpr(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public TemplateContext template() {
-		TemplateContext _localctx = new TemplateContext(Context, State);
-		EnterRule(_localctx, 22, RULE_template);
+	public ExprContext expr() {
+		ExprContext _localctx = new ExprContext(Context, State);
+		EnterRule(_localctx, 22, RULE_expr);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 132;
-			Match(BRACE_OPEN);
-			State = 133;
+			State = 138;
+			Match(LBRACE);
+			State = 139;
 			Match(VAR_PREFIX);
-			State = 134;
+			State = 140;
 			Match(TESTVAR);
-			State = 135;
-			Match(BRACE_CLOSE);
+			State = 141;
+			Match(RBRACE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1052,7 +1073,7 @@ public partial class LoomParser : Parser {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 138;
+			State = 144;
 			ErrorHandler.Sync(this);
 			_alt = 1;
 			do {
@@ -1060,7 +1081,7 @@ public partial class LoomParser : Parser {
 				case 1:
 					{
 					{
-					State = 137;
+					State = 143;
 					_localctx.op = TokenStream.LT(1);
 					_la = TokenStream.LA(1);
 					if ( !(_la==WORD || _la==WS) ) {
@@ -1076,9 +1097,9 @@ public partial class LoomParser : Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				State = 140;
+				State = 146;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,15,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,16,Context);
 			} while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER );
 			}
 		}
@@ -1094,7 +1115,7 @@ public partial class LoomParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,16,143,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,16,149,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,1,0,4,0,28,8,0,11,0,
 		12,0,29,1,0,1,0,1,1,1,1,3,1,36,8,1,1,1,1,1,4,1,40,8,1,11,1,12,1,41,1,1,
 		1,1,1,2,1,2,5,2,48,8,2,10,2,12,2,51,9,2,1,2,1,2,5,2,55,8,2,10,2,12,2,58,
@@ -1102,41 +1123,43 @@ public partial class LoomParser : Parser {
 		10,3,12,3,75,9,3,1,3,4,3,78,8,3,11,3,12,3,79,1,3,1,3,1,4,5,4,85,8,4,10,
 		4,12,4,88,9,4,1,4,1,4,1,5,1,5,1,6,1,6,1,6,1,7,1,7,5,7,99,8,7,10,7,12,7,
 		102,9,7,1,8,5,8,105,8,8,10,8,12,8,108,9,8,1,8,1,8,3,8,112,8,8,1,8,1,8,
-		1,9,1,9,3,9,118,8,9,1,9,1,9,4,9,122,8,9,11,9,12,9,123,1,10,1,10,1,10,1,
-		10,1,10,1,10,1,10,1,11,1,11,1,11,1,11,1,11,1,12,4,12,139,8,12,11,12,12,
-		12,140,1,12,0,0,13,0,2,4,6,8,10,12,14,16,18,20,22,24,0,1,2,0,5,5,8,8,145,
-		0,27,1,0,0,0,2,33,1,0,0,0,4,45,1,0,0,0,6,62,1,0,0,0,8,86,1,0,0,0,10,91,
-		1,0,0,0,12,93,1,0,0,0,14,96,1,0,0,0,16,106,1,0,0,0,18,117,1,0,0,0,20,125,
-		1,0,0,0,22,132,1,0,0,0,24,138,1,0,0,0,26,28,3,2,1,0,27,26,1,0,0,0,28,29,
-		1,0,0,0,29,27,1,0,0,0,29,30,1,0,0,0,30,31,1,0,0,0,31,32,5,0,0,1,32,1,1,
-		0,0,0,33,35,3,4,2,0,34,36,3,6,3,0,35,34,1,0,0,0,35,36,1,0,0,0,36,37,1,
-		0,0,0,37,39,3,12,6,0,38,40,3,16,8,0,39,38,1,0,0,0,40,41,1,0,0,0,41,39,
-		1,0,0,0,41,42,1,0,0,0,42,43,1,0,0,0,43,44,3,14,7,0,44,3,1,0,0,0,45,49,
-		5,1,0,0,46,48,5,8,0,0,47,46,1,0,0,0,48,51,1,0,0,0,49,47,1,0,0,0,49,50,
-		1,0,0,0,50,52,1,0,0,0,51,49,1,0,0,0,52,56,5,7,0,0,53,55,5,8,0,0,54,53,
-		1,0,0,0,55,58,1,0,0,0,56,54,1,0,0,0,56,57,1,0,0,0,57,59,1,0,0,0,58,56,
-		1,0,0,0,59,60,3,8,4,0,60,61,5,9,0,0,61,5,1,0,0,0,62,66,5,2,0,0,63,65,5,
-		8,0,0,64,63,1,0,0,0,65,68,1,0,0,0,66,64,1,0,0,0,66,67,1,0,0,0,67,69,1,
-		0,0,0,68,66,1,0,0,0,69,73,5,7,0,0,70,72,5,8,0,0,71,70,1,0,0,0,72,75,1,
-		0,0,0,73,71,1,0,0,0,73,74,1,0,0,0,74,77,1,0,0,0,75,73,1,0,0,0,76,78,3,
-		10,5,0,77,76,1,0,0,0,78,79,1,0,0,0,79,77,1,0,0,0,79,80,1,0,0,0,80,81,1,
-		0,0,0,81,82,5,9,0,0,82,7,1,0,0,0,83,85,5,8,0,0,84,83,1,0,0,0,85,88,1,0,
-		0,0,86,84,1,0,0,0,86,87,1,0,0,0,87,89,1,0,0,0,88,86,1,0,0,0,89,90,3,24,
-		12,0,90,9,1,0,0,0,91,92,7,0,0,0,92,11,1,0,0,0,93,94,5,3,0,0,94,95,5,9,
-		0,0,95,13,1,0,0,0,96,100,5,4,0,0,97,99,5,9,0,0,98,97,1,0,0,0,99,102,1,
-		0,0,0,100,98,1,0,0,0,100,101,1,0,0,0,101,15,1,0,0,0,102,100,1,0,0,0,103,
-		105,5,8,0,0,104,103,1,0,0,0,105,108,1,0,0,0,106,104,1,0,0,0,106,107,1,
-		0,0,0,107,111,1,0,0,0,108,106,1,0,0,0,109,112,3,18,9,0,110,112,3,20,10,
-		0,111,109,1,0,0,0,111,110,1,0,0,0,112,113,1,0,0,0,113,114,5,9,0,0,114,
-		17,1,0,0,0,115,116,5,5,0,0,116,118,5,7,0,0,117,115,1,0,0,0,117,118,1,0,
-		0,0,118,121,1,0,0,0,119,122,3,24,12,0,120,122,3,22,11,0,121,119,1,0,0,
-		0,121,120,1,0,0,0,122,123,1,0,0,0,123,121,1,0,0,0,123,124,1,0,0,0,124,
-		19,1,0,0,0,125,126,5,10,0,0,126,127,5,12,0,0,127,128,5,14,0,0,128,129,
-		5,13,0,0,129,130,5,16,0,0,130,131,5,11,0,0,131,21,1,0,0,0,132,133,5,10,
-		0,0,133,134,5,12,0,0,134,135,5,14,0,0,135,136,5,11,0,0,136,23,1,0,0,0,
-		137,139,7,0,0,0,138,137,1,0,0,0,139,140,1,0,0,0,140,138,1,0,0,0,140,141,
-		1,0,0,0,141,25,1,0,0,0,16,29,35,41,49,56,66,73,79,86,100,106,111,117,121,
-		123,140
+		1,9,1,9,3,9,118,8,9,1,9,5,9,121,8,9,10,9,12,9,124,9,9,1,9,1,9,4,9,128,
+		8,9,11,9,12,9,129,1,10,1,10,1,10,1,10,1,10,1,10,1,10,1,11,1,11,1,11,1,
+		11,1,11,1,12,4,12,145,8,12,11,12,12,12,146,1,12,0,0,13,0,2,4,6,8,10,12,
+		14,16,18,20,22,24,0,1,2,0,5,5,8,8,152,0,27,1,0,0,0,2,33,1,0,0,0,4,45,1,
+		0,0,0,6,62,1,0,0,0,8,86,1,0,0,0,10,91,1,0,0,0,12,93,1,0,0,0,14,96,1,0,
+		0,0,16,106,1,0,0,0,18,117,1,0,0,0,20,131,1,0,0,0,22,138,1,0,0,0,24,144,
+		1,0,0,0,26,28,3,2,1,0,27,26,1,0,0,0,28,29,1,0,0,0,29,27,1,0,0,0,29,30,
+		1,0,0,0,30,31,1,0,0,0,31,32,5,0,0,1,32,1,1,0,0,0,33,35,3,4,2,0,34,36,3,
+		6,3,0,35,34,1,0,0,0,35,36,1,0,0,0,36,37,1,0,0,0,37,39,3,12,6,0,38,40,3,
+		16,8,0,39,38,1,0,0,0,40,41,1,0,0,0,41,39,1,0,0,0,41,42,1,0,0,0,42,43,1,
+		0,0,0,43,44,3,14,7,0,44,3,1,0,0,0,45,49,5,1,0,0,46,48,5,8,0,0,47,46,1,
+		0,0,0,48,51,1,0,0,0,49,47,1,0,0,0,49,50,1,0,0,0,50,52,1,0,0,0,51,49,1,
+		0,0,0,52,56,5,7,0,0,53,55,5,8,0,0,54,53,1,0,0,0,55,58,1,0,0,0,56,54,1,
+		0,0,0,56,57,1,0,0,0,57,59,1,0,0,0,58,56,1,0,0,0,59,60,3,8,4,0,60,61,5,
+		9,0,0,61,5,1,0,0,0,62,66,5,2,0,0,63,65,5,8,0,0,64,63,1,0,0,0,65,68,1,0,
+		0,0,66,64,1,0,0,0,66,67,1,0,0,0,67,69,1,0,0,0,68,66,1,0,0,0,69,73,5,7,
+		0,0,70,72,5,8,0,0,71,70,1,0,0,0,72,75,1,0,0,0,73,71,1,0,0,0,73,74,1,0,
+		0,0,74,77,1,0,0,0,75,73,1,0,0,0,76,78,3,10,5,0,77,76,1,0,0,0,78,79,1,0,
+		0,0,79,77,1,0,0,0,79,80,1,0,0,0,80,81,1,0,0,0,81,82,5,9,0,0,82,7,1,0,0,
+		0,83,85,5,8,0,0,84,83,1,0,0,0,85,88,1,0,0,0,86,84,1,0,0,0,86,87,1,0,0,
+		0,87,89,1,0,0,0,88,86,1,0,0,0,89,90,3,24,12,0,90,9,1,0,0,0,91,92,7,0,0,
+		0,92,11,1,0,0,0,93,94,5,3,0,0,94,95,5,9,0,0,95,13,1,0,0,0,96,100,5,4,0,
+		0,97,99,5,9,0,0,98,97,1,0,0,0,99,102,1,0,0,0,100,98,1,0,0,0,100,101,1,
+		0,0,0,101,15,1,0,0,0,102,100,1,0,0,0,103,105,5,8,0,0,104,103,1,0,0,0,105,
+		108,1,0,0,0,106,104,1,0,0,0,106,107,1,0,0,0,107,111,1,0,0,0,108,106,1,
+		0,0,0,109,112,3,18,9,0,110,112,3,20,10,0,111,109,1,0,0,0,111,110,1,0,0,
+		0,112,113,1,0,0,0,113,114,5,9,0,0,114,17,1,0,0,0,115,116,5,5,0,0,116,118,
+		5,7,0,0,117,115,1,0,0,0,117,118,1,0,0,0,118,122,1,0,0,0,119,121,5,8,0,
+		0,120,119,1,0,0,0,121,124,1,0,0,0,122,120,1,0,0,0,122,123,1,0,0,0,123,
+		127,1,0,0,0,124,122,1,0,0,0,125,128,3,24,12,0,126,128,3,22,11,0,127,125,
+		1,0,0,0,127,126,1,0,0,0,128,129,1,0,0,0,129,127,1,0,0,0,129,130,1,0,0,
+		0,130,19,1,0,0,0,131,132,5,10,0,0,132,133,5,12,0,0,133,134,5,16,0,0,134,
+		135,5,13,0,0,135,136,5,15,0,0,136,137,5,11,0,0,137,21,1,0,0,0,138,139,
+		5,10,0,0,139,140,5,12,0,0,140,141,5,16,0,0,141,142,5,11,0,0,142,23,1,0,
+		0,0,143,145,7,0,0,0,144,143,1,0,0,0,145,146,1,0,0,0,146,144,1,0,0,0,146,
+		147,1,0,0,0,147,25,1,0,0,0,17,29,35,41,49,56,66,73,79,86,100,106,111,117,
+		122,127,129,146
 	};
 
 	public static readonly ATN _ATN =

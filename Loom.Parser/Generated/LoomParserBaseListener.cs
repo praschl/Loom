@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from D:/Dev/Loom/Loom.Parser/Grammar/LoomParser.g4 by ANTLR 4.13.2
+// Generated from D:/Dev/Projects/Loom/Loom.Parser/Grammar/LoomParser.g4 by ANTLR 4.13.2
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -169,17 +169,17 @@ public partial class LoomParserBaseListener : ILoomParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStatement([NotNull] LoomParser.StatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="LoomParser.template"/>.
+	/// Enter a parse tree produced by <see cref="LoomParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterTemplate([NotNull] LoomParser.TemplateContext context) { }
+	public virtual void EnterExpr([NotNull] LoomParser.ExprContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="LoomParser.template"/>.
+	/// Exit a parse tree produced by <see cref="LoomParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitTemplate([NotNull] LoomParser.TemplateContext context) { }
+	public virtual void ExitExpr([NotNull] LoomParser.ExprContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="LoomParser.textFragment"/>.
 	/// <para>The default implementation does nothing.</para>

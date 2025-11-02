@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from D:/Dev/Loom/Loom.Parser/Grammar/LoomParser.g4 by ANTLR 4.13.2
+// Generated from D:/Dev/Projects/Loom/Loom.Parser/Grammar/LoomParser.g4 by ANTLR 4.13.2
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -146,7 +146,7 @@ public partial class LoomParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// <return>The visitor result.</return>
 	public virtual Result VisitStatement([NotNull] LoomParser.StatementContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LoomParser.template"/>.
+	/// Visit a parse tree produced by <see cref="LoomParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -154,7 +154,7 @@ public partial class LoomParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitTemplate([NotNull] LoomParser.TemplateContext context) { return VisitChildren(context); }
+	public virtual Result VisitExpr([NotNull] LoomParser.ExprContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="LoomParser.textFragment"/>.
 	/// <para>

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from D:/Dev/Loom/Loom.Parser/Grammar/LoomLexer.g4 by ANTLR 4.13.2
+// Generated from D:/Dev/Projects/Loom/Loom.Parser/Grammar/LoomLexer.g4 by ANTLR 4.13.2
 
 // Unreachable code detected
 #pragma warning disable 0162

@@ -7,38 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Antlr4BuildTasks" Version="12.8.0" PrivateAssets="all"/>
         <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Antlr4 Include="Grammar\LoomParser.g4">
-            <Encoding>UTF-8</Encoding>
-            <Error>true</Error>
-            <GAtn>true</GAtn>
-            <Listener>true</Listener>
-            <Package>Loom.Parser</Package>
-            <Visitor>true</Visitor>
-        </Antlr4>
-        <Antlr4 Include="Grammar\LoomLexer.g4">
-          <AllowAntlr4cs>false</AllowAntlr4cs>
-          <AntlrToolJarDownloadDir>USERPROFILE/.m2/</AntlrToolJarDownloadDir>
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-          <DOptions>language=CSharp</DOptions>
-          <Encoding>UTF-8</Encoding>
-          <Error>true</Error>
-          <ForceAtn>false</ForceAtn>
-          <GAtn>true</GAtn>
-          <Generator>MSBuild:Compile</Generator>
-          <IntermediateOutputPath>obj\Debug\net9.0\</IntermediateOutputPath>
-          <JavaDownloadDirectory>USERPROFILE/.jre/</JavaDownloadDirectory>
-          <JavaExec>PATH;DOWNLOAD</JavaExec>
-          <Listener>true</Listener>
-          <Log>false</Log>
-          <LongMessages>false</LongMessages>
-          <Package>Loom.Parser</Package>
-          <Visitor>true</Visitor>
-        </Antlr4>
     </ItemGroup>
 
 </Project>

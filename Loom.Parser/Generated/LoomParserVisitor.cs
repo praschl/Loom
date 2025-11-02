@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from D:/Dev/Loom/Loom.Parser/Grammar/LoomParser.g4 by ANTLR 4.13.2
+// Generated from D:/Dev/Projects/Loom/Loom.Parser/Grammar/LoomParser.g4 by ANTLR 4.13.2
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -99,11 +99,11 @@ public interface ILoomParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStatement([NotNull] LoomParser.StatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LoomParser.template"/>.
+	/// Visit a parse tree produced by <see cref="LoomParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitTemplate([NotNull] LoomParser.TemplateContext context);
+	Result VisitExpr([NotNull] LoomParser.ExprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="LoomParser.textFragment"/>.
 	/// </summary>
