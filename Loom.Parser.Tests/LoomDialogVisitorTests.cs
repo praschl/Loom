@@ -1,6 +1,6 @@
 ﻿using Antlr4.Runtime;
 using FluentAssertions;
-using Generated;
+using Loom.Parser.Generated;
 using Loom.Parser.Models;
 using Loom.Parser.Services;
 

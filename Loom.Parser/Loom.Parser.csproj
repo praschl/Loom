@@ -7,7 +7,30 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Antlr4BuildTasks" Version="12.11.0" PrivateAssets="all" IncludeAssets="build"/>
         <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Antlr4 Include="Grammar/LoomLexer.g4"
+                Listener="false"
+                Visitor="true"
+                Error="true"
+                GAtn="false"
+                Package="Loom.Parser.Generated"
+                Dsl="Lexer"
+                AntOutDir="Generated"
+        />
+
+        <Antlr4 Include="Grammar/LoomParser.g4"
+                Listener="false"
+                Visitor="true"
+                Error="true"
+                GAtn="false"
+                Package="Loom.Parser.Generated"
+                Dsl="Parser"
+                AntOutDir="Generated"
+        />
     </ItemGroup>
 
 </Project>

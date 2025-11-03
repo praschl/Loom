@@ -1,4 +1,4 @@
-﻿using Generated;
+﻿using Loom.Parser.Generated;
 using Loom.Parser.Models;
 
 namespace Loom.Parser.Services;
