@@ -8,24 +8,33 @@ TAGS  : 'tags' ;
 BLOCK_START : '-' '-' '-' '-'* ;
 BLOCK_END   : '=' '=' '=' '='* ;
 
-WORD        : ~[@{}\r\n[\]":$ ]+ ; 
+WORD        : ~[{}\r\n":$ ]+ ; 
     
-AT          : '@' ;
 COLON       : ':' ;
 
 WS          : WS_CHAR ;
 NL          : [\r\n]+ ;
 
-// --- BRACES ---
-LBRACE       : '{' -> pushMode(BRACES) ;
+// --- BRACES for JavaScript blocks ---
+LBRACE       : '{' -> pushMode(JS_BLOCK) ;
 
-mode BRACES;
-RBRACE       : '}' -> popMode ;
-VAR_PREFIX   : '$' ;
-EQUALS       : '=' ;
+mode JS_BLOCK;
 
-BRACES_WS    : WS_CHAR -> skip ;
+// Capture everything until we find the matching closing brace
+JS_CONTENT   : ( JS_STRING | JS_REGEX | JS_COMMENT | JS_NESTED_BRACES | ~[{}/"'`] )+ ;
 
-STRING_LITERAL : '"' ~["]* '"' ;
+fragment JS_STRING         : '"' ( '\\' . | ~[\\"\r\n] )* '"'
+                           | '\'' ( '\\' . | ~[\\'\r\n] )* '\''
+                           | '`' ( '\\' . | ~[\\`] )* '`'
+                           ;
 
-TESTVAR  : 'var1' ;
+fragment JS_REGEX          : '/' ( '\\' . | ~[/\r\n\\] )+ '/' [gimsuvy]* ;
+
+fragment JS_COMMENT        : '//' ~[\r\n]*
+                           | '/*' .*? '*/'
+                           ;
+
+fragment JS_NESTED_BRACES  : '{' ( JS_STRING | JS_REGEX | JS_COMMENT | JS_NESTED_BRACES | ~[{}/"'`] )* '}'
+                           ;
+
+RBRACE    : '}' -> popMode ;

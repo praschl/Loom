@@ -126,7 +126,7 @@ public partial class LoomParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// <return>The visitor result.</return>
 	public virtual Result VisitLine([NotNull] LoomParser.LineContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LoomParser.dialogLine"/>.
+	/// Visit a parse tree produced by <see cref="LoomParser.lineContent"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -134,9 +134,9 @@ public partial class LoomParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitDialogLine([NotNull] LoomParser.DialogLineContext context) { return VisitChildren(context); }
+	public virtual Result VisitLineContent([NotNull] LoomParser.LineContentContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LoomParser.statement"/>.
+	/// Visit a parse tree produced by <see cref="LoomParser.name"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -144,9 +144,9 @@ public partial class LoomParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitStatement([NotNull] LoomParser.StatementContext context) { return VisitChildren(context); }
+	public virtual Result VisitName([NotNull] LoomParser.NameContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LoomParser.expr"/>.
+	/// Visit a parse tree produced by <see cref="LoomParser.scriptBlock"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -154,7 +154,7 @@ public partial class LoomParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitExpr([NotNull] LoomParser.ExprContext context) { return VisitChildren(context); }
+	public virtual Result VisitScriptBlock([NotNull] LoomParser.ScriptBlockContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="LoomParser.textFragment"/>.
 	/// <para>

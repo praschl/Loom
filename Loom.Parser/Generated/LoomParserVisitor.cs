@@ -87,23 +87,23 @@ public interface ILoomParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitLine([NotNull] LoomParser.LineContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LoomParser.dialogLine"/>.
+	/// Visit a parse tree produced by <see cref="LoomParser.lineContent"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitDialogLine([NotNull] LoomParser.DialogLineContext context);
+	Result VisitLineContent([NotNull] LoomParser.LineContentContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LoomParser.statement"/>.
+	/// Visit a parse tree produced by <see cref="LoomParser.name"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitStatement([NotNull] LoomParser.StatementContext context);
+	Result VisitName([NotNull] LoomParser.NameContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LoomParser.expr"/>.
+	/// Visit a parse tree produced by <see cref="LoomParser.scriptBlock"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitExpr([NotNull] LoomParser.ExprContext context);
+	Result VisitScriptBlock([NotNull] LoomParser.ScriptBlockContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="LoomParser.textFragment"/>.
 	/// </summary>

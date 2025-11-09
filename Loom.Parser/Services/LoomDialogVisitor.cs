@@ -31,24 +31,32 @@ public class LoomDialogVisitor : LoomParserBaseVisitor<object>
 
     public override LineNode VisitLine(LoomParser.LineContext context)
     {
-        var line = context.dialogLine();
-        if (line != null)
-            return VisitDialogLine(line);
-
-        throw new NotSupportedException(context.ToString());
-    }
-
-    public override LineNode VisitDialogLine(LoomParser.DialogLineContext context)
-    {
-        var sentences = context.textFragment().Select(VisitTextFragment).ToList();
-
+        var nameContext = context.name();
+        var speaker = nameContext != null ? VisitName(nameContext) : null;
+        
         var lineNode = new LineNode
         {
-            Speaker = context.name?.Text,
-            Fragments = sentences,
+            Speaker = speaker,
+            Fragments = context.lineContent().Select(VisitLineContent).ToList(),
         };
-        
+
         return lineNode;
+    }
+
+    public override List<LineNode.ILineNodeFragment> VisitName(LoomParser.NameContext context)
+    {
+        return context.lineContent().Select(VisitLineContent).ToList();
+    }
+
+    public override LineNode.ILineNodeFragment VisitLineContent(LoomParser.LineContentContext context)
+    {
+        if (context.Text != null)
+            return VisitTextFragment(context.textFragment());
+        
+        if (context.Script != null)
+            return VisitScriptBlock(context.scriptBlock());
+
+        throw new NotSupportedException(context.GetText());
     }
 
     public override string VisitPlainWords(LoomParser.PlainWordsContext context)
@@ -61,6 +69,16 @@ public class LoomDialogVisitor : LoomParserBaseVisitor<object>
         return new LineNode.TextFragment
         {
             Text = context.GetText()
+        };
+    }
+
+    //
+
+    public override LineNode.ILineNodeFragment VisitScriptBlock(LoomParser.ScriptBlockContext context)
+    {
+        return new LineNode.ScriptFragment
+        {
+            Script = context.GetText()
         };
     }
 }

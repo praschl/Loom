@@ -6,7 +6,7 @@ Michael: {$var1} Welt!
 Chris: Hi ebenfalls{$var1} , das geht!
 ===
 
-title: noch was anderes
+title: noch was { if (a=={x:1}.x && b == "{\"}}") "ganz"; else ""; } anderes
 ---
 Noch was ohne Name...
 Simon: Was ist das hier?

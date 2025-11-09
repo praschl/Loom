@@ -1,4 +1,4 @@
-parser grammar LoomParser; // Define a grammar called CSV
+parser grammar LoomParser;
 
 options {
   tokenVocab = LoomLexer;
@@ -26,11 +26,16 @@ blockEnd   : BLOCK_END NL* ;
 
 // text
 
-line : WS* (dialogLine | statement) NL ;
+// Dialog line can contain text and inline script blocks
+line : name? WS* lineContent+ NL ;
 
-dialogLine : (name=WORD COLON)? WS* (textFragment | expr )+ ;
+lineContent : Text=textFragment
+            | Script=scriptBlock
+            ;
 
-statement  : LBRACE VAR_PREFIX TESTVAR EQUALS STRING_LITERAL RBRACE;
-expr   : LBRACE VAR_PREFIX TESTVAR RBRACE ;
+name: lineContent+ COLON ;
 
-textFragment   : op=(WORD | WS)+ ;
+// Standalone script block on its own line
+scriptBlock : LBRACE JS_CONTENT* RBRACE ;
+
+textFragment : op=(WORD | WS)+ ;
