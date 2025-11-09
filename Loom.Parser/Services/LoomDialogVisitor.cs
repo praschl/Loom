@@ -31,11 +31,13 @@ public class LoomDialogVisitor : LoomParserBaseVisitor<object>
 
     public override LineNode VisitLine(LoomParser.LineContext context)
     {
+        var indent = (context.indent?.Text ?? string.Empty).Length;
         var nameContext = context.name();
         var speaker = nameContext != null ? VisitName(nameContext) : null;
         
         var lineNode = new LineNode
         {
+            Indent = indent,
             Speaker = speaker,
             Fragments = context.lineContent().Select(VisitLineContent).ToList(),
         };

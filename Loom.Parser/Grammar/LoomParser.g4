@@ -28,7 +28,7 @@ blockEnd   : BLOCK_END NL* ;
 // text
 
 // Dialog line can contain text and inline script blocks
-line : name? WS* lineContent+ NL ;
+line : indent=WS* name? WS* lineContent+ NL ;
 
 lineContent : Text=textFragment
             | Script=scriptBlock

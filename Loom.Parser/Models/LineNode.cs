@@ -4,6 +4,7 @@ public class LineNode
 {
     public interface ILineNodeFragment;
 
+    public int Indent { get; set; }
     public List<ILineNodeFragment>? Speaker { get; set; }
     
     public List<ILineNodeFragment>? Fragments { get; set; }
