@@ -1,13 +1,18 @@
-﻿title: Grossvater
+﻿{
+  das ist nochmal ein scriptblock
+}
+
+title: Grossvater
 tags: eins zwei drei
 ---
 {$var1 = "Das ist ein Satz!"}
-Michael: {$var1} Welt!
+Michael: {$var1} Welt { if (a=={x:1}.x && b == "{\"}}") "ganz"; else ""; } anderes!
 Chris: Hi ebenfalls{$var1} , das geht!
 ===
 
-title: noch was { if (a=={x:1}.x && b == "{\"}}") "ganz"; else ""; } anderes
+title: noch was anderes
 ---
+Michi: Text mit { if (a=={x:1}.x && b == "{\"}}") "ganz"; else ""; } wildem javascript
 Noch was ohne Name...
 Simon: Was ist das hier?
 ===

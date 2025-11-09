@@ -5,7 +5,8 @@ options {
 }
 
 // Parser rules
-file : block+ EOF ; 
+file : scriptBlock? NL*
+       block+ EOF ; 
 
 // blocks
 block      : Title=title
@@ -36,6 +37,6 @@ lineContent : Text=textFragment
 name: lineContent+ COLON ;
 
 // Standalone script block on its own line
-scriptBlock : LBRACE JS_CONTENT* RBRACE ;
+scriptBlock : LBRACE script=JS_CONTENT* RBRACE ;
 
 textFragment : op=(WORD | WS)+ ;

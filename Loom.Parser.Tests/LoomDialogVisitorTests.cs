@@ -66,16 +66,18 @@ public class LoomDialogVisitorTests
     public void Parses_SimpleBlock_WithScripts()
     {
         // Arrange
-        var text = """
+        var complex = """if (a=={x:1}.x && b == "{\"}}") "ganz"; else "";""";
+        
+        var text = $$"""
                    title: Grossvaters Haus
                    tags: eins zwei drei
                    -----------
-                   Michael: Hallo {jstest1}!
-                   Chris: Hi {jstest2}, das geht!
+                   Michael: Hallo {name}!
+                   Chris: Hi {jstest1}, das geht! {jstest2}
                    {if test}
-                   Noch was ohne Name... {jstest3}
+                   Noch was ohne Name... {ohne}
                    {else}
-                   Simon: Was ist das hier?
+                   Simon: Was ist {{{complex}}} das hier?
                    {endif}
                    =====
                    """;
@@ -92,5 +94,11 @@ public class LoomDialogVisitorTests
         Assert.Equal(0, parser.NumberOfSyntaxErrors);
 
         file.Should().NotBeNull();
+        
+        file.ParsedBlocks![0].Lines.Should().NotBeNullOrEmpty();
+
+        file.ParsedBlocks[0].Lines![1].Fragments![1].Should().BeOfType<LineNode.ScriptFragment>().Subject.Script.Should().Be("jstest1");
+        file.ParsedBlocks[0].Lines![1].Fragments![3].Should().BeOfType<LineNode.ScriptFragment>().Subject.Script.Should().Be("jstest2");
+        file.ParsedBlocks[0].Lines![5].Fragments![1].Should().BeOfType<LineNode.ScriptFragment>().Subject.Script.Should().Be(complex);
     }
 }

@@ -72,13 +72,11 @@ public class LoomDialogVisitor : LoomParserBaseVisitor<object>
         };
     }
 
-    //
-
     public override LineNode.ILineNodeFragment VisitScriptBlock(LoomParser.ScriptBlockContext context)
     {
         return new LineNode.ScriptFragment
         {
-            Script = context.GetText()
+            Script = context.script.Text
         };
     }
 }
