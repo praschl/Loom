@@ -5,7 +5,7 @@ options {
 }
 
 // Parser rules
-file : scriptBlock? NL*
+file : jsBlock? NL*
        block+ EOF ; 
 
 // blocks
@@ -20,23 +20,32 @@ title : TITLE WS* COLON WS* Text=plainLine NL;
 tags  : TAGS WS* COLON WS* plainWords+ NL ;
 
 plainLine  : WS* textFragment;
-plainWords : op=(WS | WORD); // we do not use sentence here, because we really want the words separated by spaces
+plainWords : op=(WS | WORD); // we want individual words here
 
 blockStart : BLOCK_START NL ;
 blockEnd   : BLOCK_END NL* ;
 
 // text
 
+line       : dl=dialogLine NL* 
+           | jsif=jsIfBlock NL* 
+           ;
+
 // Dialog line can contain text and inline script blocks
-line : indent=WS* name? WS* lineContent+ NL ;
+dialogLine : indent=WS* name? WS* lineContent+;
 
 lineContent : Text=textFragment
-            | Script=scriptBlock
+            | Out=jsOutBlock
+            | Script=jsBlock
             ;
 
 name: lineContent+ COLON ;
 
 // Standalone script block on its own line
-scriptBlock : LBRACE script=JS_CONTENT* RBRACE ;
+jsIfBlock   : indent=WS* IF condition=JS_CONTENT* RBRACE NL*;
+
+jsBlock : LBRACE script=JS_CONTENT* RBRACE ;
+
+jsOutBlock  : OUT script=JS_CONTENT* RBRACE ;
 
 textFragment : op=(WORD | WS)+ ;

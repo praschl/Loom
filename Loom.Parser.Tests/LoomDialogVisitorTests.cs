@@ -19,7 +19,11 @@ public class LoomDialogVisitorTests : IDisposable
         var inputStream = new AntlrInputStream(input);
         var lexer = new LoomLexer(inputStream);
         var tokens = new CommonTokenStream(lexer);
-        return new LoomParser(tokens);
+        var parser = new LoomParser(tokens);
+        
+        parser.AddErrorListener(ThrowingErrorListener.Instance);
+
+        return parser;
     }
 
     [Fact]
@@ -49,8 +53,8 @@ public class LoomDialogVisitorTests : IDisposable
         var file = visitor.VisitFile(tree);
 
         // Assert
-        Assert.NotNull(tree);
-        Assert.Equal(0, parser.NumberOfSyntaxErrors);
+        tree.Should().NotBeNull();
+        parser.NumberOfSyntaxErrors.Should().Be(0);
 
         file.Should().NotBeNull();
         file.ParsedBlocks.Should().NotBeNull();
@@ -61,18 +65,18 @@ public class LoomDialogVisitorTests : IDisposable
 
         file.ParsedBlocks[0].Lines.Should().NotBeNullOrEmpty();
 
-        file.ParsedBlocks[0].Lines![0].Speaker![0].Should().BeOfType<LineNode.TextFragment>().Subject.Text.Should().Be("Michael");
-        file.ParsedBlocks[0].Lines![0].Fragments![0].Should().BeOfType<LineNode.TextFragment>().Subject.Text.Should().Be("Hallo Welt!");
+        file.ParsedBlocks[0].Lines![0].As<DialogLineNode>().Speaker![0].Should().BeOfType<DialogLineNode.TextFragment>().Subject.Text.Should().Be("Michael");
+        file.ParsedBlocks[0].Lines![0].As<DialogLineNode>().Fragments![0].Should().BeOfType<DialogLineNode.TextFragment>().Subject.Text.Should().Be("Hallo Welt!");
 
-        file.ParsedBlocks[0].Lines![1].Speaker![0].Should().BeOfType<LineNode.TextFragment>().Subject.Text.Should().Be("Chris");
-        file.ParsedBlocks[0].Lines![1].Fragments![0].Should().BeOfType<LineNode.TextFragment>().Subject.Text.Should().Be("Hi ebenfalls, das geht!");
+        file.ParsedBlocks[0].Lines![1].As<DialogLineNode>().Speaker![0].Should().BeOfType<DialogLineNode.TextFragment>().Subject.Text.Should().Be("Chris");
+        file.ParsedBlocks[0].Lines![1].As<DialogLineNode>().Fragments![0].Should().BeOfType<DialogLineNode.TextFragment>().Subject.Text.Should().Be("Hi ebenfalls, das geht!");
     }
     
     [Fact]
     public void Parses_SimpleBlock_WithScripts()
     {
         // Arrange
-        var complex = """if (a=={x:1}.x && b == "{\"}}") "ganz"; else "";""";
+        var complex = """test (a=={x:1}.x && b == "{\"}}") "ganz"; else "";""";
         
         var text = $$"""
                    title: Grossvaters Haus
@@ -86,6 +90,13 @@ public class LoomDialogVisitorTests : IDisposable
                    Simon: Was ist {{{complex}}} das hier?
                    {endif}
                    =====
+
+                   title: Keller
+                   ---
+                   Michael: test {= with} script
+                     Chris: {= without text }
+                   {= and without name}
+                   ===
                    """;
 
         var parser = CreateParser(text);
@@ -96,16 +107,16 @@ public class LoomDialogVisitorTests : IDisposable
         var file = visitor.VisitFile(tree);
 
         // Assert
-        Assert.NotNull(tree);
-        Assert.Equal(0, parser.NumberOfSyntaxErrors);
+        tree.Should().NotBeNull();
+        parser.NumberOfSyntaxErrors.Should().Be(0);
 
         file.Should().NotBeNull();
         
         file.ParsedBlocks![0].Lines.Should().NotBeNullOrEmpty();
 
-        file.ParsedBlocks[0].Lines![1].Fragments![1].Should().BeOfType<LineNode.ScriptFragment>().Subject.Script.Should().Be("jstest1");
-        file.ParsedBlocks[0].Lines![1].Fragments![3].Should().BeOfType<LineNode.ScriptFragment>().Subject.Script.Should().Be("jstest2");
-        file.ParsedBlocks[0].Lines![5].Fragments![1].Should().BeOfType<LineNode.ScriptFragment>().Subject.Script.Should().Be(complex);
+        file.ParsedBlocks[0].Lines![1].As<DialogLineNode>().Fragments![1].Should().BeOfType<DialogLineNode.ScriptFragment>().Subject.Script.Should().Be("jstest1");
+        file.ParsedBlocks[0].Lines![1].As<DialogLineNode>().Fragments![3].Should().BeOfType<DialogLineNode.ScriptFragment>().Subject.Script.Should().Be("jstest2");
+        file.ParsedBlocks[0].Lines![5].As<DialogLineNode>().Fragments![1].Should().BeOfType<DialogLineNode.ScriptFragment>().Subject.Script.Should().Be(complex);
     }
     
     
@@ -113,14 +124,14 @@ public class LoomDialogVisitorTests : IDisposable
     public void Parses_Indents()
     {
         // Arrange
-        var complex = """if (a=={x:1}.x && b == "{\"}}") "ganz"; else "";""";
+        var complex = """test (a=={x:1}.x && b == "{\"}}") "ganz"; else "";""";
         
         var text = $$"""
                      title: Grossvaters Haus
                      tags: eins zwei drei
                      ------------
                      Michael: Hallo {name}!
-                       Chris: Hi {jstest1}, das geht! {jstest2}
+                       Chris: Hi {= jstest1}, das geht! {= jstest2}
                      {if test}
                        Noch was ohne Name... {ohne}
                      {else}
@@ -137,16 +148,16 @@ public class LoomDialogVisitorTests : IDisposable
         var file = visitor.VisitFile(tree);
 
         // Assert
-        Assert.NotNull(tree);
-        Assert.Equal(0, parser.NumberOfSyntaxErrors);
+        tree.Should().NotBeNull();
+        parser.NumberOfSyntaxErrors.Should().Be(0);
 
         file.Should().NotBeNull();
         
-        file.ParsedBlocks![0].Lines![0].Indent.Should().Be(0);
-        file.ParsedBlocks![0].Lines![1].Indent.Should().Be(2);
-        file.ParsedBlocks![0].Lines![2].Indent.Should().Be(0);
-        file.ParsedBlocks![0].Lines![3].Indent.Should().Be(2);
-        file.ParsedBlocks![0].Lines![4].Indent.Should().Be(0);
-        file.ParsedBlocks![0].Lines![5].Indent.Should().Be(4);
+        file.ParsedBlocks![0].Lines![0].As<DialogLineNode>().Indent.Should().Be(0);
+        file.ParsedBlocks![0].Lines![1].As<DialogLineNode>().Indent.Should().Be(2);
+        file.ParsedBlocks![0].Lines![2].As<JsIfNode>().Indent.Should().Be(0);
+        file.ParsedBlocks![0].Lines![3].As<DialogLineNode>().Indent.Should().Be(2);
+        file.ParsedBlocks![0].Lines![4].As<DialogLineNode>().Indent.Should().Be(0);
+        file.ParsedBlocks![0].Lines![5].As<DialogLineNode>().Indent.Should().Be(4);
     }
 }

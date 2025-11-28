@@ -87,6 +87,12 @@ public interface ILoomParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitLine([NotNull] LoomParser.LineContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="LoomParser.dialogLine"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDialogLine([NotNull] LoomParser.DialogLineContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="LoomParser.lineContent"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -99,11 +105,23 @@ public interface ILoomParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitName([NotNull] LoomParser.NameContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LoomParser.scriptBlock"/>.
+	/// Visit a parse tree produced by <see cref="LoomParser.jsIfBlock"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitScriptBlock([NotNull] LoomParser.ScriptBlockContext context);
+	Result VisitJsIfBlock([NotNull] LoomParser.JsIfBlockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="LoomParser.jsBlock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitJsBlock([NotNull] LoomParser.JsBlockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="LoomParser.jsOutBlock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitJsOutBlock([NotNull] LoomParser.JsOutBlockContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="LoomParser.textFragment"/>.
 	/// </summary>

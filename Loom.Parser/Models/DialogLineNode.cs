@@ -1,6 +1,17 @@
 ﻿namespace Loom.Parser.Models;
 
-public class LineNode
+public interface ILineNode
+{
+    
+}
+
+public class JsIfNode : ILineNode
+{
+    public required int Indent { get; set; }
+    public required string Condition { get; init; }
+}
+
+public class DialogLineNode : ILineNode
 {
     public interface ILineNodeFragment;
 
@@ -28,6 +39,8 @@ public class LineNode
 
     public class ScriptFragment : ILineNodeFragment
     {
+        public bool HasOutput { get; init; }
+        
         public required string Script { get; init; }
 
         public override string ToString()

@@ -16,7 +16,10 @@ WS          : WS_CHAR ;
 NL          : [\r\n]+ ;
 
 // --- BRACES for JavaScript blocks ---
-LBRACE       : '{' -> pushMode(JS_BLOCK) ;
+IF_SP     : '{ if' -> pushMode(JS_BLOCK), type(IF) ; 
+IF        : '{if' -> pushMode(JS_BLOCK) ; 
+OUT       : '{=' -> pushMode(JS_BLOCK) ; 
+LBRACE    : '{' -> pushMode(JS_BLOCK) ;
 
 mode JS_BLOCK;
 

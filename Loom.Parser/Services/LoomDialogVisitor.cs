@@ -29,13 +29,28 @@ public class LoomDialogVisitor : LoomParserBaseVisitor<object>
         };
     }
 
-    public override LineNode VisitLine(LoomParser.LineContext context)
+    public override ILineNode VisitLine(LoomParser.LineContext context)
+    {
+        if (context.jsif != null)
+        {
+            return VisitJsIfBlock(context.jsIfBlock());
+        }
+
+        if (context.dl != null)
+        {
+            return VisitDialogLine(context.dialogLine());
+        }
+
+        throw new NotSupportedException(context.GetText());
+    }
+
+    public override ILineNode VisitDialogLine(LoomParser.DialogLineContext context)
     {
         var indent = (context.indent?.Text ?? string.Empty).Length;
         var nameContext = context.name();
         var speaker = nameContext != null ? VisitName(nameContext) : null;
         
-        var lineNode = new LineNode
+        var lineNode = new DialogLineNode
         {
             Indent = indent,
             Speaker = speaker,
@@ -45,19 +60,22 @@ public class LoomDialogVisitor : LoomParserBaseVisitor<object>
         return lineNode;
     }
 
-    public override List<LineNode.ILineNodeFragment> VisitName(LoomParser.NameContext context)
+    public override List<DialogLineNode.ILineNodeFragment> VisitName(LoomParser.NameContext context)
     {
         return context.lineContent().Select(VisitLineContent).ToList();
     }
 
-    public override LineNode.ILineNodeFragment VisitLineContent(LoomParser.LineContentContext context)
+    public override DialogLineNode.ILineNodeFragment VisitLineContent(LoomParser.LineContentContext context)
     {
         if (context.Text != null)
             return VisitTextFragment(context.textFragment());
         
         if (context.Script != null)
-            return VisitScriptBlock(context.scriptBlock());
+            return VisitJsBlock(context.jsBlock());
 
+        if (context.Out != null)
+            return VisitJsOutBlock(context.jsOutBlock());
+        
         throw new NotSupportedException(context.GetText());
     }
 
@@ -66,18 +84,37 @@ public class LoomDialogVisitor : LoomParserBaseVisitor<object>
         return context.GetText();
     }
 
-    public override LineNode.ILineNodeFragment VisitTextFragment(LoomParser.TextFragmentContext context)
+    public override DialogLineNode.ILineNodeFragment VisitTextFragment(LoomParser.TextFragmentContext context)
     {
-        return new LineNode.TextFragment
+        return new DialogLineNode.TextFragment
         {
             Text = context.GetText()
         };
     }
 
-    public override LineNode.ILineNodeFragment VisitScriptBlock(LoomParser.ScriptBlockContext context)
+    public override DialogLineNode.ILineNodeFragment VisitJsBlock(LoomParser.JsBlockContext context)
     {
-        return new LineNode.ScriptFragment
+        return new DialogLineNode.ScriptFragment
         {
+            Script = context.script.Text
+        };
+    }
+
+    public override ILineNode VisitJsIfBlock(LoomParser.JsIfBlockContext context)
+    {
+        var indent = (context.indent?.Text ?? string.Empty).Length;
+        return new JsIfNode
+        {
+            Indent = indent,
+            Condition = context.condition.Text
+        };
+    }
+
+    public override DialogLineNode.ILineNodeFragment VisitJsOutBlock(LoomParser.JsOutBlockContext context)
+    {
+        return new DialogLineNode.ScriptFragment
+        {
+            HasOutput = true,
             Script = context.script.Text
         };
     }
