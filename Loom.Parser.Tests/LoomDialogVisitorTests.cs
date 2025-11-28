@@ -19,7 +19,11 @@ public class LoomDialogVisitorTests : IDisposable
         var inputStream = new AntlrInputStream(input);
         var lexer = new LoomLexer(inputStream);
         var tokens = new CommonTokenStream(lexer);
-        return new LoomParser(tokens);
+        var parser = new LoomParser(tokens);
+        
+        parser.AddErrorListener(ThrowingErrorListener.Instance);
+
+        return parser;
     }
 
     [Fact]
@@ -49,8 +53,8 @@ public class LoomDialogVisitorTests : IDisposable
         var file = visitor.VisitFile(tree);
 
         // Assert
-        Assert.NotNull(tree);
-        Assert.Equal(0, parser.NumberOfSyntaxErrors);
+        tree.Should().NotBeNull();
+        parser.NumberOfSyntaxErrors.Should().Be(0);
 
         file.Should().NotBeNull();
         file.ParsedBlocks.Should().NotBeNull();
@@ -72,7 +76,7 @@ public class LoomDialogVisitorTests : IDisposable
     public void Parses_SimpleBlock_WithScripts()
     {
         // Arrange
-        var complex = """if (a=={x:1}.x && b == "{\"}}") "ganz"; else "";""";
+        var complex = """test (a=={x:1}.x && b == "{\"}}") "ganz"; else "";""";
         
         var text = $$"""
                    title: Grossvaters Haus
@@ -86,6 +90,13 @@ public class LoomDialogVisitorTests : IDisposable
                    Simon: Was ist {{{complex}}} das hier?
                    {endif}
                    =====
+
+                   title: Keller
+                   ---
+                   Michael: test {= with} script
+                     Chris: {= without text }
+                   {= and without name}
+                   ===
                    """;
 
         var parser = CreateParser(text);
@@ -96,8 +107,8 @@ public class LoomDialogVisitorTests : IDisposable
         var file = visitor.VisitFile(tree);
 
         // Assert
-        Assert.NotNull(tree);
-        Assert.Equal(0, parser.NumberOfSyntaxErrors);
+        tree.Should().NotBeNull();
+        parser.NumberOfSyntaxErrors.Should().Be(0);
 
         file.Should().NotBeNull();
         
@@ -113,14 +124,14 @@ public class LoomDialogVisitorTests : IDisposable
     public void Parses_Indents()
     {
         // Arrange
-        var complex = """if (a=={x:1}.x && b == "{\"}}") "ganz"; else "";""";
+        var complex = """test (a=={x:1}.x && b == "{\"}}") "ganz"; else "";""";
         
         var text = $$"""
                      title: Grossvaters Haus
                      tags: eins zwei drei
                      ------------
                      Michael: Hallo {name}!
-                       Chris: Hi {jstest1}, das geht! {jstest2}
+                       Chris: Hi {= jstest1}, das geht! {= jstest2}
                      {if test}
                        Noch was ohne Name... {ohne}
                      {else}
@@ -137,8 +148,8 @@ public class LoomDialogVisitorTests : IDisposable
         var file = visitor.VisitFile(tree);
 
         // Assert
-        Assert.NotNull(tree);
-        Assert.Equal(0, parser.NumberOfSyntaxErrors);
+        tree.Should().NotBeNull();
+        parser.NumberOfSyntaxErrors.Should().Be(0);
 
         file.Should().NotBeNull();
         
